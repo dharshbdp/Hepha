@@ -457,8 +457,8 @@ export default function BlocklyWorkspace({
       renderer: 'zelos',
       grid: {
         spacing: 24,
-        length: 2,
-        colour: theme === 'dark' ? '#18181c' : '#e8ebed',
+        length: 1,
+        colour: theme === 'dark' ? '#141416' : '#eff1f3',
         snap: true
       },
       zoom: {

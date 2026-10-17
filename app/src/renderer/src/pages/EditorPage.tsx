@@ -769,7 +769,8 @@ export function EditorPage(): React.JSX.Element {
                 {isDirty && <span className="cf-dirty-dot" title="Unsaved changes" />}
               </div>
 
-              <div className="cf-project-btn-group">
+              {/* Project Management Actions */}
+              <div className="cf-project-btn-group" role="group" aria-label="Project actions">
                 <button
                   className="cf-btn-project"
                   onClick={handleNewProject}
@@ -785,7 +786,7 @@ export function EditorPage(): React.JSX.Element {
                   Open
                 </button>
                 <button
-                  className="cf-btn-project cf-btn-project-save"
+                  className={`cf-btn-project cf-btn-project-save ${isDirty ? 'is-dirty' : ''}`}
                   onClick={() => handleSaveProject(false)}
                   title="Save Project (Ctrl+S)"
                 >
@@ -818,8 +819,14 @@ export function EditorPage(): React.JSX.Element {
                   </svg>
                   <span>Templates</span>
                 </button>
+              </div>
+
+              <div className="cf-toolbar-divider" aria-hidden="true" />
+
+              {/* AI Actions Group */}
+              <div className="cf-ai-btn-group" role="group" aria-label="AI actions">
                 <button
-                  className="cf-btn-project cf-btn-project-ai"
+                  className="cf-btn-ai"
                   onClick={() => setIsPromptModalOpen(true)}
                   title="Prompt-to-Blocks: Synthesize visual blocks from natural language (Ctrl+K)"
                 >
@@ -838,7 +845,7 @@ export function EditorPage(): React.JSX.Element {
                   <span>AI Prompt</span>
                 </button>
                 <button
-                  className="cf-btn-project cf-btn-project-transpile"
+                  className="cf-btn-ai"
                   onClick={() => setIsTranspileModalOpen(true)}
                   title="AI Code-to-Blocks Transpiler: Convert arbitrary Arduino C++ sketches into visual blocks (Ctrl+Shift+T)"
                 >

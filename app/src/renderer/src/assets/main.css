@@ -173,34 +173,35 @@ body {
 }
 
 .cf-header-row-top {
-  padding: 7px 18px;
-  min-height: 40px;
+  padding: 6px 16px;
+  min-height: 38px;
   border-bottom: 1px solid var(--border-subtle);
   background-color: var(--bg-header);
 }
 
 .cf-header-row-bottom {
-  padding: 6px 18px;
-  min-height: 42px;
+  padding: 5px 16px;
+  min-height: 38px;
   background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .cf-top-meta {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .cf-hardware-bar {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .cf-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .cf-brand-icon {
@@ -239,7 +240,8 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 11px;
+  height: 28px;
+  padding: 0 11px;
   border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
@@ -249,6 +251,7 @@ body {
   border: 1px solid var(--border-default);
   background: var(--bg-surface);
   color: var(--text-primary);
+  box-sizing: border-box;
   transition: all 0.15s ease;
 }
 
@@ -282,28 +285,37 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--text-muted);
+}
+
+.cf-control label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
 }
 
 .cf-control select {
+  height: 28px;
   background: var(--bg-input);
   color: var(--text-primary);
-  border: 1px solid var(--border-default);
-  padding: 6px 10px;
+  border: 1px solid var(--border-subtle);
+  padding: 0 8px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11px;
   font-family: inherit;
   outline: none;
   cursor: pointer;
+  box-sizing: border-box;
   transition:
     border-color 0.15s ease,
     background-color 0.15s ease;
 }
 
 .cf-control select:hover:not(:disabled) {
-  border-color: var(--border-strong);
+  border-color: var(--border-default);
 }
 
 .cf-control select:focus {
@@ -328,14 +340,17 @@ body {
 .cf-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 6px 14px;
+  height: 28px;
+  padding: 0 14px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: pointer;
   border: 1px solid transparent;
+  box-sizing: border-box;
   transition: all 0.15s ease;
   white-space: nowrap;
 }
@@ -379,21 +394,25 @@ body {
 .cf-btn-sm {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
-  background: var(--btn-secondary-bg);
-  color: var(--btn-secondary-text);
-  border: 1px solid var(--btn-secondary-border);
-  padding: 5px 10px;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  height: 28px;
+  padding: 0 9px;
   border-radius: 4px;
   font-size: 11px;
   font-weight: 500;
+  box-sizing: border-box;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .cf-btn-sm:hover:not(:disabled) {
-  background: var(--btn-secondary-hover);
-  border-color: var(--border-strong);
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-default);
 }
 
 .cf-btn-sm:disabled {
@@ -406,15 +425,16 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   padding: 0;
   background: var(--bg-surface);
   color: var(--text-secondary);
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--border-subtle);
   border-radius: 4px;
   cursor: pointer;
   overflow: hidden;
+  box-sizing: border-box;
   transition:
     background-color 0.15s ease,
     border-color 0.15s ease,
@@ -515,10 +535,12 @@ body {
   display: flex;
   align-items: center;
   background: var(--bg-surface);
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--border-subtle);
   border-radius: 4px;
   padding: 2px;
   gap: 2px;
+  height: 26px;
+  box-sizing: border-box;
 }
 
 .cf-view-btn {
@@ -526,14 +548,15 @@ body {
   align-items: center;
   gap: 5px;
   background: transparent;
-  color: var(--text-secondary);
-  border: 1px solid transparent;
+  color: var(--text-muted);
+  border: none;
   border-radius: 3px;
-  padding: 4px 10px;
+  height: 20px;
+  padding: 0 8px;
   font-size: 11px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.12s ease;
 }
 
 .cf-view-btn:hover {
@@ -544,7 +567,6 @@ body {
 .cf-view-btn.active {
   background: var(--bg-surface-active);
   color: var(--text-primary);
-  border-color: var(--border-strong);
   font-weight: 600;
 }
 
@@ -663,10 +685,13 @@ body.cf-resizing iframe {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 14px;
+  padding: 0 14px;
+  height: 36px;
+  min-height: 36px;
   background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-default);
+  border-bottom: 1px solid var(--border-subtle);
   z-index: 5;
+  box-sizing: border-box;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease;
@@ -679,19 +704,19 @@ body.cf-resizing iframe {
 }
 
 .cf-pane-title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
   color: var(--text-muted);
   text-transform: uppercase;
 }
 
 .cf-badge {
-  font-size: 10px;
+  font-size: 9.5px;
   font-family: 'Consolas', 'Courier New', monospace;
-  padding: 2px 6px;
+  padding: 1px 5px;
   background: var(--bg-app);
-  color: var(--text-secondary);
+  color: var(--text-muted);
   border: 1px solid var(--border-subtle);
   border-radius: 3px;
 }
@@ -700,6 +725,15 @@ body.cf-resizing iframe {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.cf-canvas-actions .cf-btn-sm {
+  height: 24px;
+  padding: 0 8px;
+  font-size: 10.5px;
+  border-radius: 3px;
+  border-color: var(--border-subtle);
+  background: var(--bg-card);
 }
 
 .cf-canvas-body {
@@ -733,66 +767,70 @@ body.cf-resizing iframe {
   justify-content: center;
   pointer-events: none;
   z-index: 5;
-  padding: 24px;
+  padding: 20px;
 }
 
 .cf-canvas-empty-card {
   pointer-events: auto;
-  max-width: 440px;
+  max-width: 340px;
   background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: 8px;
-  padding: 32px 28px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 20px 18px;
   text-align: center;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
-  animation: cf-fade-in 0.25s ease-out;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  animation: cf-fade-in 0.2s ease-out;
 }
 
 .cf-canvas-empty-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
   background-color: var(--bg-card);
   border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  margin-bottom: 16px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
 }
 
 .cf-canvas-empty-title {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   letter-spacing: -0.01em;
 }
 
 .cf-canvas-empty-desc {
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--text-secondary);
-  margin-bottom: 20px;
+  font-size: 11.5px;
+  line-height: 1.48;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  max-width: 270px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .cf-canvas-empty-actions {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .cf-btn-empty-action {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-size: 12px;
+  gap: 6px;
+  font-size: 11px;
   font-weight: 500;
-  padding: 8px 14px;
-  border-radius: 6px;
+  padding: 0 11px;
+  height: 26px;
+  border-radius: 4px;
   background: var(--bg-card);
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--border-subtle);
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.15s ease;
@@ -800,13 +838,13 @@ body.cf-resizing iframe {
 
 .cf-btn-empty-action:hover {
   background: var(--bg-surface-hover);
-  border-color: var(--border-strong);
+  border-color: var(--border-default);
 }
 
 @keyframes cf-fade-in {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
@@ -825,11 +863,15 @@ body.cf-resizing iframe {
 
 .cf-inspector-header {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-default);
-  padding: 0 10px;
-  min-height: 37px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 8px;
+  height: 36px;
+  min-height: 36px;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease;
@@ -837,8 +879,9 @@ body.cf-resizing iframe {
 
 .cf-tabs {
   display: flex;
-  gap: 2px;
+  align-items: stretch;
   height: 100%;
+  gap: 2px;
 }
 
 .cf-tab {
@@ -848,34 +891,45 @@ body.cf-resizing iframe {
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
-  padding: 8px 12px;
+  margin-bottom: -1px;
+  padding: 0 10px;
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: 500;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.15s ease;
+  position: relative;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .cf-tab:hover {
-  color: var(--text-primary);
-  background: var(--bg-surface-hover);
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .cf-tab.active {
   color: var(--text-primary);
-  border-bottom-color: var(--text-primary);
+  font-weight: 600;
+  border-bottom: 2px solid var(--text-primary);
   background: transparent;
 }
 
 .cf-tab-badge {
-  font-size: 9px;
+  font-size: 9.5px;
   font-family: 'Consolas', 'Courier New', monospace;
   padding: 1px 5px;
   background: var(--bg-card);
-  color: var(--text-secondary);
+  color: var(--text-muted);
   border: 1px solid var(--border-subtle);
-  border-radius: 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.cf-tab.active .cf-tab-badge {
+  color: var(--text-secondary);
+  border-color: var(--border-default);
 }
 
 .cf-tab-dot {
@@ -1034,24 +1088,35 @@ body.cf-resizing iframe {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
+  padding: 0 14px;
+  height: 34px;
+  min-height: 34px;
   background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-default);
-  font-size: 11px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 10.5px;
   font-family: 'Consolas', 'Courier New', monospace;
-  color: var(--text-secondary);
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  box-sizing: border-box;
 }
 
 .cf-terminal-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+}
+
+.cf-terminal-actions .cf-btn-sm {
+  height: 22px;
+  padding: 0 7px;
+  font-size: 10px;
+  border-radius: 3px;
 }
 
 .cf-checkbox-label {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   cursor: pointer;
   font-size: 11px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -1062,15 +1127,17 @@ body.cf-resizing iframe {
 .cf-checkbox-label input[type='checkbox'] {
   accent-color: var(--text-primary);
   cursor: pointer;
+  width: 13px;
+  height: 13px;
 }
 
 .cf-terminal-body {
   flex: 1;
-  padding: 14px 18px;
+  padding: 12px 16px;
   overflow-y: auto;
   font-family: 'Consolas', 'Courier New', monospace;
-  font-size: 12px;
-  line-height: 1.65;
+  font-size: 11.5px;
+  line-height: 1.6;
   background: var(--bg-terminal);
 }
 
@@ -1090,7 +1157,7 @@ body.cf-resizing iframe {
 .cf-timestamp {
   color: var(--terminal-timestamp);
   margin-right: 8px;
-  font-size: 11px;
+  font-size: 10.5px;
 }
 
 .cf-empty-terminal,
@@ -1100,7 +1167,7 @@ body.cf-resizing iframe {
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 40px 24px;
+  padding: 24px 20px;
   text-align: center;
   color: var(--text-muted);
 }
@@ -1109,50 +1176,60 @@ body.cf-resizing iframe {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .cf-terminal-empty-title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-secondary);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   letter-spacing: 0.02em;
 }
 
 .cf-terminal-empty-subtitle {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
-  max-width: 320px;
-  line-height: 1.5;
+  max-width: 260px;
+  line-height: 1.45;
 }
 
 /* Terminal Footer / Transmit Bar */
 .cf-terminal-footer {
   display: flex;
-  padding: 10px 16px;
+  padding: 6px 12px;
+  height: 40px;
+  min-height: 40px;
   background: var(--bg-surface);
-  border-top: 1px solid var(--border-default);
-  gap: 8px;
+  border-top: 1px solid var(--border-subtle);
+  gap: 6px;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .cf-terminal-footer select {
+  height: 28px;
   background: var(--bg-input);
   color: var(--text-primary);
-  border: 1px solid var(--border-default);
-  padding: 7px 10px;
+  border: 1px solid var(--border-subtle);
+  padding: 0 8px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11px;
   font-family: inherit;
   outline: none;
   cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.cf-terminal-footer select:hover:not(:disabled) {
+  border-color: var(--border-default);
 }
 
 .cf-terminal-footer select:focus {
@@ -1166,15 +1243,21 @@ body.cf-resizing iframe {
 
 .cf-terminal-footer input {
   flex: 1;
+  height: 28px;
   background: var(--bg-input);
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--border-subtle);
   border-radius: 4px;
-  padding: 7px 12px;
+  padding: 0 10px;
   color: var(--text-primary);
-  font-size: 12px;
+  font-size: 11.5px;
   font-family: 'Consolas', 'Courier New', monospace;
   outline: none;
+  box-sizing: border-box;
   transition: border-color 0.15s ease;
+}
+
+.cf-terminal-footer input:hover:not(:disabled) {
+  border-color: var(--border-default);
 }
 
 .cf-terminal-footer input:focus {
@@ -1184,6 +1267,14 @@ body.cf-resizing iframe {
 .cf-terminal-footer input:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.cf-terminal-footer button[type='submit'] {
+  height: 28px;
+  padding: 0 14px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
 }
 
 /* Code Inspector & Language Switcher */
@@ -1502,9 +1593,9 @@ body.cf-resizing iframe {
 /* Blockly Modern Monochromatic Theme Overrides */
 .blocklyToolboxDiv {
   background-color: var(--bg-surface) !important;
-  border-right: 1px solid var(--border-default) !important;
+  border-right: 1px solid var(--border-subtle) !important;
   color: var(--text-primary) !important;
-  padding: 8px 4px !important;
+  padding: 6px 2px !important;
 }
 
 .blocklyFlyoutBackground {
@@ -1513,7 +1604,7 @@ body.cf-resizing iframe {
 }
 
 .blocklyFlyout {
-  border-right: 1px solid var(--border-default) !important;
+  border-right: 1px solid var(--border-subtle) !important;
 }
 
 /* Modern Block Paths with Elevation & Borders */
@@ -1666,14 +1757,14 @@ body.cf-resizing iframe {
 .blocklyToolboxCategory {
   display: flex !important;
   align-items: center !important;
-  height: 28px !important;
-  min-height: 28px !important;
-  max-height: 28px !important;
-  line-height: 28px !important;
-  padding: 0 10px 0 10px !important;
-  margin: 2px 4px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  max-height: 26px !important;
+  line-height: 26px !important;
+  padding: 0 8px 0 8px !important;
+  margin: 1px 3px !important;
   border-radius: 0 4px 4px 0 !important;
-  border-left-width: 3px !important;
+  border-left-width: 2px !important;
   border-top: none !important;
   border-right: none !important;
   border-bottom: none !important;
@@ -1709,9 +1800,9 @@ body.cf-resizing iframe {
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
   font-size: 11px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.04em !important;
-  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.03em !important;
+  color: var(--text-muted) !important;
   transition: color 0.15s ease !important;
   line-height: 1 !important;
   margin: 0 !important;
@@ -1726,12 +1817,12 @@ body.cf-resizing iframe {
 }
 
 .blocklyToolboxCategory.blocklyToolboxSelected .blocklyToolboxCategoryLabel {
-  font-weight: 700 !important;
+  font-weight: 600 !important;
 }
 
 .blocklyTreeSeparator {
-  border-bottom: 1px solid var(--border-default) !important;
-  margin: 8px 6px !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  margin: 6px 6px !important;
   height: 0 !important;
 }
 
@@ -2250,36 +2341,92 @@ body.cf-resizing iframe {
 .cf-project-btn-group {
   display: flex;
   align-items: center;
-  gap: 4px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 2px;
+  gap: 1px;
 }
 
 .cf-btn-project {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
-  padding: 3px 8px;
+  padding: 0 8px;
+  height: 22px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-secondary);
   background: transparent;
-  border: 1px solid var(--border-subtle);
+  border: none;
   border-radius: 3px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.12s ease;
+  white-space: nowrap;
 }
 
 .cf-btn-project:hover {
   color: var(--text-primary);
   background: var(--bg-surface-hover);
-  border-color: var(--border-default);
 }
 
-.cf-btn-project-save {
-  font-weight: 700;
+.cf-btn-project-save.is-dirty {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .cf-btn-project-templates {
-  border-style: dashed;
+  border-left: 1px solid var(--border-subtle) !important;
+  border-radius: 0 3px 3px 0 !important;
+  margin-left: 2px !important;
+  padding-left: 8px !important;
+}
+
+.cf-toolbar-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border-subtle);
+  margin: 0 3px;
+}
+
+.cf-ai-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cf-btn-ai {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 9px;
+  height: 26px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.cf-btn-ai:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.cf-btn-ai svg {
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+
+.cf-btn-ai:hover svg {
+  color: var(--text-primary);
 }
 
 /* Floating Notification Toast */

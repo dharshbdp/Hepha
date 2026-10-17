@@ -39,3 +39,16 @@ export async function prepareSketch(
     cleanup
   }
 }
+
+/**
+ * Prunes the global temporary build directory (%TEMP%/hepha_builds)
+ * called on application launch and shutdown.
+ */
+export async function pruneStaleBuildDirectories(): Promise<void> {
+  try {
+    const rootTemp = join(tmpdir(), 'hepha_builds')
+    await fs.rm(rootTemp, { recursive: true, force: true })
+  } catch {
+    // Best-effort cleanup, ignore if not found
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "formatVersion": "1.0",
+  "name": "Smart Obstacle Avoidance",
+  "description": "HC-SR04 distance monitoring on pins 7/8 controlling servo angle on pin 9.",
+  "boardId": "arduino_uno",
+  "baudRate": 115200,
+  "createdAt": "2026-10-17T00:00:00.000Z",
+  "updatedAt": "2026-10-17T00:00:00.000Z",
+  "workspace": {
+    "blocks": {
+      "languageVersion": 0,
+      "blocks": [
+        {
+          "type": "controls_if",
+          "id": "obs_if",
+          "x": 48,
+          "y": 48,
+          "extraState": { "hasElse": true },
+          "inputs": {
+            "IF0": {
+              "block": {
+                "type": "logic_compare",
+                "id": "obs_cmp",
+                "fields": { "OP": "LT" },
+                "inputs": {
+                  "A": {
+                    "block": {
+                      "type": "sensor_ultrasonic",
+                      "id": "obs_sonar",
+                      "fields": { "TRIG_PIN": "7", "ECHO_PIN": "8" }
+                    }
+                  },
+                  "B": {
+                    "shadow": { "type": "math_number", "id": "obs_dist_val", "fields": { "NUM": 20 } }
+                  }
+                }
+              }
+            },
+            "DO0": {
+              "block": {
+                "type": "actuator_servo",
+                "id": "obs_turn",
+                "fields": { "PIN": "9" },
+                "inputs": {
+                  "ANGLE": {
+                    "shadow": { "type": "math_number", "id": "turn_180", "fields": { "NUM": 180 } }
+                  }
+                },
+                "next": {
+                  "block": {
+                    "type": "time_delay",
+                    "id": "obs_delay_turn",
+                    "inputs": {
+                      "DELAY_MS": {
+                        "shadow": { "type": "math_number", "id": "del_400", "fields": { "NUM": 400 } }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "ELSE": {
+              "block": {
+                "type": "actuator_servo",
+                "id": "obs_fwd",
+                "fields": { "PIN": "9" },
+                "inputs": {
+                  "ANGLE": {
+                    "shadow": { "type": "math_number", "id": "turn_90", "fields": { "NUM": 90 } }
+                  }
+                },
+                "next": {
+                  "block": {
+                    "type": "time_delay",
+                    "id": "obs_delay_fwd",
+                    "inputs": {
+                      "DELAY_MS": {
+                        "shadow": { "type": "math_number", "id": "del_100", "fields": { "NUM": 100 } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "formatVersion": "1.0",
+  "name": "Custom State Machine",
+  "description": "Embedded custom state machine leveraging raw_cpp_code fallback block.",
+  "boardId": "arduino_uno",
+  "baudRate": 115200,
+  "createdAt": "2026-10-17T00:00:00.000Z",
+  "updatedAt": "2026-10-17T00:00:00.000Z",
+  "workspace": {
+    "blocks": {
+      "languageVersion": 0,
+      "blocks": [
+        {
+          "type": "pin_digital_write",
+          "id": "st_led",
+          "x": 48,
+          "y": 48,
+          "fields": { "PIN": "13", "STATE": "HIGH" },
+          "next": {
+            "block": {
+              "type": "raw_cpp_code",
+              "id": "st_raw_1",
+              "fields": { "CODE": "static uint8_t state = 0;" },
+              "next": {
+                "block": {
+                  "type": "raw_cpp_code",
+                  "id": "st_raw_2",
+                  "fields": { "CODE": "switch (state) { case 0: state = 1; break; default: state = 0; }" },
+                  "next": {
+                    "block": {
+                      "type": "time_delay",
+                      "id": "st_delay",
+                      "inputs": {
+                        "DELAY_MS": { "shadow": { "type": "math_number", "id": "st_100", "fields": { "NUM": 100 } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

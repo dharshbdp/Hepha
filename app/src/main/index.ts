@@ -4,6 +4,22 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { registerIpcHandlers } from './ipc'
 import { disconnectSerialPort } from './serial'
+import { sanitizeError } from './diagnostics/errorSanitizer'
+import { pruneStaleBuildDirectories } from './compiler/sketchBuilder'
+
+// Global privacy-preserving crash protection
+process.on('uncaughtException', (error) => {
+  const diag = sanitizeError(error)
+  console.error('[Hepha Main Error]', diag.category, ':', diag.sanitizedMessage)
+  if (diag.sanitizedStack) {
+    console.error(diag.sanitizedStack)
+  }
+})
+
+process.on('unhandledRejection', (reason) => {
+  const diag = sanitizeError(reason)
+  console.error('[Hepha Main Rejection]', diag.category, ':', diag.sanitizedMessage)
+})
 
 let mainWindow: BrowserWindow | null = null
 
@@ -45,7 +61,10 @@ function createWindow(): void {
 }
 
 // Electron lifecycle initialization
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  // Prune any stale temporary compiler builds from previous sessions
+  await pruneStaleBuildDirectories()
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('io.hepha.desktop')
 
@@ -70,4 +89,9 @@ app.on('window-all-closed', () => {
     disconnectSerialPort()
     app.quit()
   }
+})
+
+app.on('before-quit', async () => {
+  disconnectSerialPort()
+  await pruneStaleBuildDirectories()
 })

@@ -1,0 +1,58 @@
+{
+  "formatVersion": "1.0",
+  "name": "Gas & Smoke Detector",
+  "description": "MQ-2 sensor on analog pin A0 triggering buzzer alarm on pin 8.",
+  "boardId": "arduino_uno",
+  "baudRate": 115200,
+  "createdAt": "2026-10-17T00:00:00.000Z",
+  "updatedAt": "2026-10-17T00:00:00.000Z",
+  "workspace": {
+    "blocks": {
+      "languageVersion": 0,
+      "blocks": [
+        {
+          "type": "controls_if",
+          "id": "gas_if",
+          "x": 48,
+          "y": 48,
+          "extraState": { "hasElse": true },
+          "inputs": {
+            "IF0": {
+              "block": {
+                "type": "logic_compare",
+                "id": "gas_cmp",
+                "fields": { "OP": "GT" },
+                "inputs": {
+                  "A": {
+                    "block": {
+                      "type": "sensor_mq2_read",
+                      "id": "gas_analog",
+                      "fields": { "PIN": "A0" }
+                    }
+                  },
+                  "B": {
+                    "shadow": { "type": "math_number", "id": "threshold_400", "fields": { "NUM": 400 } }
+                  }
+                }
+              }
+            },
+            "DO0": {
+              "block": {
+                "type": "pin_digital_write",
+                "id": "alarm_on",
+                "fields": { "PIN": "8", "STATE": "HIGH" }
+              }
+            },
+            "ELSE": {
+              "block": {
+                "type": "pin_digital_write",
+                "id": "alarm_off",
+                "fields": { "PIN": "8", "STATE": "LOW" }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "formatVersion": "1.0",
+  "name": "Weather Station",
+  "description": "DHT11 temperature telemetry logged over serial.",
+  "boardId": "arduino_uno",
+  "baudRate": 115200,
+  "createdAt": "2026-10-17T00:00:00.000Z",
+  "updatedAt": "2026-10-17T00:00:00.000Z",
+  "workspace": {
+    "blocks": {
+      "languageVersion": 0,
+      "blocks": [
+        {
+          "type": "serial_print",
+          "id": "ser_hdr",
+          "x": 48,
+          "y": 48,
+          "fields": { "NEWLINE": false },
+          "inputs": {
+            "CONTENT": {
+              "shadow": { "type": "text", "id": "txt_temp", "fields": { "TEXT": "temp:" } }
+            }
+          },
+          "next": {
+            "block": {
+              "type": "serial_print",
+              "id": "ser_val",
+              "fields": { "NEWLINE": true },
+              "inputs": {
+                "CONTENT": {
+                  "block": {
+                    "type": "sensor_dht",
+                    "id": "dht_read",
+                    "fields": { "PIN": "2", "TYPE": "DHT11", "READING": "TEMP" }
+                  }
+                }
+              },
+              "next": {
+                "block": {
+                  "type": "time_delay",
+                  "id": "poll_delay",
+                  "inputs": {
+                    "DELAY_MS": {
+                      "shadow": { "type": "math_number", "id": "num_2000", "fields": { "NUM": 2000 } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

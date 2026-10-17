@@ -31,6 +31,7 @@ nsis:
   createStartMenuShortcut: true
   oneClick: false
   allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
 portable:
   artifactName: Hepha-${version}-Windows-Portable.${ext}
 mac:
@@ -73,4 +74,4 @@ npmRebuild: false
 publish:
   provider: github
   owner: dharshbdp
-  repo: CircuitForge
+  repo: Hepha

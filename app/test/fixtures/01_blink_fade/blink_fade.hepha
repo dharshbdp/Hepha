@@ -1,0 +1,76 @@
+{
+  "formatVersion": "1.0",
+  "name": "Blink & Fade",
+  "description": "Digital LED blinking on Pin 13 and PWM brightness fading on Pin 9.",
+  "boardId": "arduino_uno",
+  "baudRate": 115200,
+  "createdAt": "2026-10-17T00:00:00.000Z",
+  "updatedAt": "2026-10-17T00:00:00.000Z",
+  "workspace": {
+    "blocks": {
+      "languageVersion": 0,
+      "blocks": [
+        {
+          "type": "pin_digital_write",
+          "id": "blink_high",
+          "x": 48,
+          "y": 48,
+          "fields": { "PIN": "13", "STATE": "HIGH" },
+          "next": {
+            "block": {
+              "type": "pin_analog_write",
+              "id": "pwm_high",
+              "fields": { "PIN": "9" },
+              "inputs": {
+                "VALUE": {
+                  "shadow": { "type": "math_number", "id": "val_255", "fields": { "NUM": 255 } }
+                }
+              },
+              "next": {
+                "block": {
+                  "type": "time_delay",
+                  "id": "delay_1",
+                  "inputs": {
+                    "DELAY_MS": {
+                      "shadow": { "type": "math_number", "id": "d1_num", "fields": { "NUM": 500 } }
+                    }
+                  },
+                  "next": {
+                    "block": {
+                      "type": "pin_digital_write",
+                      "id": "blink_low",
+                      "fields": { "PIN": "13", "STATE": "LOW" },
+                      "next": {
+                        "block": {
+                          "type": "pin_analog_write",
+                          "id": "pwm_low",
+                          "fields": { "PIN": "9" },
+                          "inputs": {
+                            "VALUE": {
+                              "shadow": { "type": "math_number", "id": "val_64", "fields": { "NUM": 64 } }
+                            }
+                          },
+                          "next": {
+                            "block": {
+                              "type": "time_delay",
+                              "id": "delay_2",
+                              "inputs": {
+                                "DELAY_MS": {
+                                  "shadow": { "type": "math_number", "id": "d2_num", "fields": { "NUM": 500 } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

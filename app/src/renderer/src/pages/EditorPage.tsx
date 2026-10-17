@@ -45,12 +45,25 @@ export function EditorPage(): React.JSX.Element {
   } = useSerial()
 
   // Layout & Workspace states
+  const [appVersion, setAppVersion] = useState<string>('1.0.0')
   const [viewMode, setViewMode] = useState<'split' | 'canvas' | 'terminal'>('split')
   const [activeTab, setActiveTab] = useState<
     'terminal' | 'code' | 'device' | 'build' | 'telemetry' | 'copilot'
   >('terminal')
   const [blockCount, setBlockCount] = useState<number>(0)
   const [copiedCode, setCopiedCode] = useState<boolean>(false)
+
+  // Sourced dynamically from Electron main process
+  useEffect(() => {
+    if (window.api?.getAppVersion) {
+      window.api
+        .getAppVersion()
+        .then((ver) => {
+          if (ver) setAppVersion(ver)
+        })
+        .catch(() => {})
+    }
+  }, [])
 
   // Resizable Split Pane Divider state
   const [splitRatio, setSplitRatio] = useState<number>(() => {
@@ -735,7 +748,7 @@ export function EditorPage(): React.JSX.Element {
                 </svg>
               </span>
               <span className="cf-brand-title">Hepha</span>
-              <span className="cf-brand-version">v0.5</span>
+              <span className="cf-brand-version">v{appVersion}</span>
             </div>
 
             <div className="cf-project-divider" />
@@ -991,26 +1004,6 @@ export function EditorPage(): React.JSX.Element {
               <span>{isUploading ? 'Uploading...' : 'Upload'}</span>
             </button>
 
-            <button
-              className="cf-btn-action cf-btn-ai-action"
-              onClick={() => setIsPromptModalOpen(true)}
-              title="Prompt-to-Blocks: Describe circuit in plain English to generate visual blocks (Ctrl+K)"
-            >
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-              </svg>
-              <span>AI Prompt</span>
-            </button>
-
             {/* Static Hardware Diagnostics Status Badge (Milestone v0.6 Phase 15) */}
             {diagnostics && blockCount > 0 && (
               <button
@@ -1200,6 +1193,71 @@ export function EditorPage(): React.JSX.Element {
               workspaceRef={workspaceRef}
               onWorkspaceChange={handleWorkspaceChange}
             />
+            {blockCount === 0 && (
+              <div className="cf-canvas-empty-state">
+                <div className="cf-canvas-empty-card">
+                  <div className="cf-canvas-empty-icon" aria-hidden="true">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="3" y="3" width="7" height="7" rx="1" />
+                      <rect x="14" y="3" width="7" height="7" rx="1" />
+                      <rect x="14" y="14" width="7" height="7" rx="1" />
+                      <rect x="3" y="14" width="7" height="7" rx="1" />
+                    </svg>
+                  </div>
+                  <h3 className="cf-canvas-empty-title">Visual Logic Canvas Ready</h3>
+                  <p className="cf-canvas-empty-desc">
+                    Drag hardware blocks from the toolbox on the left to build firmware, or
+                    initialize with a starter template.
+                  </p>
+                  <div className="cf-canvas-empty-actions">
+                    <button
+                      type="button"
+                      className="cf-btn cf-btn-secondary cf-btn-empty-action"
+                      onClick={() => setIsStarterModalOpen(true)}
+                    >
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                      </svg>
+                      <span>Browse Templates</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="cf-btn cf-btn-secondary cf-btn-empty-action"
+                      onClick={() => setIsPromptModalOpen(true)}
+                    >
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                      </svg>
+                      <span>Prompt with AI</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
@@ -1342,10 +1400,30 @@ export function EditorPage(): React.JSX.Element {
 
               <div className="cf-terminal-body">
                 {logs.length === 0 ? (
-                  <div className="cf-empty-terminal">
-                    {isConnected
-                      ? 'Connected. Waiting for incoming telemetry from hardware...'
-                      : 'Serial port disconnected. Select a port and click Connect.'}
+                  <div className="cf-terminal-empty">
+                    <div className="cf-terminal-empty-icon" aria-hidden="true">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="4 17 10 11 4 5" />
+                        <line x1="12" y1="19" x2="20" y2="19" />
+                      </svg>
+                    </div>
+                    <div className="cf-terminal-empty-title">
+                      {isConnected ? 'Serial Stream Online' : 'Serial Port Offline'}
+                    </div>
+                    <div className="cf-terminal-empty-subtitle">
+                      {isConnected
+                        ? `Awaiting telemetry from hardware at ${connectionState.baudRate || selectedBaud} bps...`
+                        : 'Select a target COM port and click Connect to start telemetry streaming.'}
+                    </div>
                   </div>
                 ) : (
                   logs.map((log) => (

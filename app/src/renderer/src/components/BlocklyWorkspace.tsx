@@ -458,7 +458,7 @@ export default function BlocklyWorkspace({
       grid: {
         spacing: 24,
         length: 2,
-        colour: theme === 'dark' ? '#222226' : '#dee2e6',
+        colour: theme === 'dark' ? '#18181c' : '#e8ebed',
         snap: true
       },
       zoom: {

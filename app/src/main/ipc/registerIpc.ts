@@ -1,4 +1,4 @@
-import { ipcMain, BrowserWindow, dialog } from 'electron'
+import { ipcMain, BrowserWindow, dialog, app } from 'electron'
 import * as fs from 'fs/promises'
 import { listSerialDevices } from '../device/deviceManager'
 import {
@@ -226,5 +226,10 @@ export function registerIpcHandlers(getMainWindow: () => BrowserWindow | null): 
   // AI Code-to-Blocks Transpiler (Milestone v0.7 Phase 16)
   ipcMain.handle('ai:transpile-sketch', async (_, request: AiTranspileRequest) => {
     return transpileSketchWithAi(request)
+  })
+
+  // Application Version Query
+  ipcMain.handle('app:get-version', () => {
+    return app.getVersion()
   })
 }

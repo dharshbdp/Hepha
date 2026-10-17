@@ -166,6 +166,9 @@ export interface HephaAPI {
 
   // AI Code-to-Blocks Transpiler (Milestone v0.7 Phase 16)
   transpileSketch: (request: AiTranspileRequest) => Promise<AiTranspileResult>
+
+  // Application Version
+  getAppVersion?: () => Promise<string>
 }
 
 export type CircuitForgeAPI = HephaAPI

@@ -85,7 +85,10 @@ const api: HephaAPI = {
 
   // AI Code-to-Blocks Transpiler (Milestone v0.7 Phase 16)
   transpileSketch: (request: AiTranspileRequest): Promise<AiTranspileResult> =>
-    ipcRenderer.invoke('ai:transpile-sketch', request)
+    ipcRenderer.invoke('ai:transpile-sketch', request),
+
+  // Application Version
+  getAppVersion: (): Promise<string> => ipcRenderer.invoke('app:get-version')
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

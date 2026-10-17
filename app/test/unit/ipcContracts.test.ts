@@ -102,11 +102,13 @@ describe('IPC Contract Signatures & Response Models (ipcContracts)', () => {
       setAiApiKey: true,
       getAiApiKeyStatus: true,
       synthesizeBlocks: true,
-      transpileSketch: true
+      transpileSketch: true,
+      getAppVersion: true
     }
 
-    expect(Object.keys(mockApi).length).toBe(19)
+    expect(Object.keys(mockApi).length).toBe(20)
     expect(mockApi.saveProject).toBe(true)
     expect(mockApi.openProject).toBe(true)
+    expect(mockApi.getAppVersion).toBe(true)
   })
 })

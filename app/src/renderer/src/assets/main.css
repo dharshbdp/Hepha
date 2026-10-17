@@ -39,10 +39,10 @@
   --status-bg: #141416;
   --status-border: #2d2d32;
   --status-text: #e4e4e7;
-  --status-dot-connected: #f4f4f6;
-  --status-dot-connecting: #a1a1aa;
+  --status-dot-connected: #34d399;
+  --status-dot-connecting: #fbbf24;
   --status-dot-disconnected: #52525b;
-  --status-dot-error: #f4f4f6;
+  --status-dot-error: #f87171;
 
   --terminal-line: #f4f4f6;
   --terminal-sent: #a1a1aa;
@@ -90,10 +90,10 @@
   --status-bg: #ffffff;
   --status-border: #dee2e6;
   --status-text: #212529;
-  --status-dot-connected: #121212;
-  --status-dot-connecting: #6c757d;
-  --status-dot-disconnected: #adb5bd;
-  --status-dot-error: #121212;
+  --status-dot-connected: #059669;
+  --status-dot-connecting: #d97706;
+  --status-dot-disconnected: #9ca3af;
+  --status-dot-error: #dc2626;
 
   --terminal-line: #121212;
   --terminal-sent: #495057;
@@ -721,6 +721,99 @@ body.cf-resizing iframe {
   bottom: 0;
 }
 
+/* Empty Visual Canvas State Overlay */
+.cf-canvas-empty-state {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 5;
+  padding: 24px;
+}
+
+.cf-canvas-empty-card {
+  pointer-events: auto;
+  max-width: 440px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 32px 28px;
+  text-align: center;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  animation: cf-fade-in 0.25s ease-out;
+}
+
+.cf-canvas-empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.cf-canvas-empty-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.cf-canvas-empty-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.cf-canvas-empty-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cf-btn-empty-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.cf-btn-empty-action:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-strong);
+}
+
+@keyframes cf-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Right Inspector Pane */
 .cf-inspector-pane {
   display: flex;
@@ -1000,12 +1093,44 @@ body.cf-resizing iframe {
   font-size: 11px;
 }
 
-.cf-empty-terminal {
-  color: var(--text-muted);
-  font-size: 12px;
-  margin-top: 32px;
+.cf-empty-terminal,
+.cf-terminal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 40px 24px;
   text-align: center;
+  color: var(--text-muted);
+}
+
+.cf-terminal-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.cf-terminal-empty-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
   letter-spacing: 0.02em;
+}
+
+.cf-terminal-empty-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 320px;
+  line-height: 1.5;
 }
 
 /* Terminal Footer / Transmit Bar */
@@ -3956,4 +4081,59 @@ body.cf-resizing iframe {
   border: 1px solid rgba(245, 158, 11, 0.2);
   padding: 6px 10px;
   border-radius: 4px;
+}
+
+/* ==========================================================================
+   Responsive Desktop Shell Adaptations (Min supported: 850x600)
+   ========================================================================== */
+@media (max-width: 1100px) {
+  .cf-header-row-top {
+    padding: 6px 12px;
+  }
+
+  .cf-header-row-bottom {
+    padding: 5px 12px;
+  }
+
+  .cf-project-bar {
+    max-width: 500px;
+  }
+
+  #cf-port-select {
+    max-width: 180px;
+  }
+
+  #cf-board-select {
+    max-width: 140px;
+  }
+
+  .cf-btn-project span {
+    font-size: 10.5px;
+  }
+}
+
+@media (max-width: 950px) {
+  .cf-brand-version {
+    display: none;
+  }
+
+  .cf-view-btn span {
+    display: none;
+  }
+
+  .cf-view-btn {
+    padding: 4px 6px;
+  }
+
+  #cf-port-select {
+    max-width: 140px;
+  }
+
+  #cf-board-select {
+    max-width: 120px;
+  }
+
+  .cf-control label {
+    font-size: 10px;
+  }
 }

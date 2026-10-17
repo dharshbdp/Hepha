@@ -180,10 +180,17 @@ body {
 }
 
 .cf-header-row-bottom {
-  padding: 5px 16px;
+  padding: 5px 14px;
   min-height: 38px;
   background-color: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cf-header-row-bottom::-webkit-scrollbar {
+  display: none;
 }
 
 .cf-top-meta {
@@ -195,7 +202,9 @@ body {
 .cf-hardware-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  min-width: 0;
+  flex-wrap: nowrap;
 }
 
 .cf-brand {
@@ -327,13 +336,47 @@ body {
   cursor: not-allowed;
 }
 
+.cf-control-board,
+.cf-control-port,
+.cf-control-baud {
+  flex-shrink: 0;
+}
+
 #cf-board-select {
-  max-width: 170px;
+  width: 140px;
+  max-width: 160px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #cf-port-select {
-  max-width: 230px;
+  width: 175px;
+  max-width: 205px;
   text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#cf-baud-select {
+  width: 82px;
+  max-width: 86px;
+  flex-shrink: 0;
+}
+
+.cf-btn-refresh-ports {
+  flex-shrink: 0;
+  padding: 0 7px;
+  height: 28px;
+}
+
+.cf-btn-connect-toggle {
+  flex-shrink: 0;
+  min-width: 84px;
+  height: 28px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-align: center;
 }
 
 /* Buttons */
@@ -477,7 +520,9 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 10px;
+  height: 26px;
+  padding: 0 10px;
+  box-sizing: border-box;
   background: var(--status-bg);
   border: 1px solid var(--status-border);
   border-radius: 4px;
@@ -588,14 +633,15 @@ body {
 
 .cf-main-split.view-split .cf-inspector-pane {
   display: flex;
-  min-width: 320px;
+  flex: 1 1 0%;
+  min-width: 0;
   position: relative;
 }
 
-/* Resizable Split Pane Divider */
+/* Resizable Split Pane Divider - Subtle Monochromatic Line */
 .cf-split-resizer {
-  width: 9px;
-  margin: 0 -4px;
+  width: 7px;
+  margin: 0 -3px;
   cursor: col-resize;
   position: relative;
   z-index: 30;
@@ -605,45 +651,27 @@ body {
   user-select: none;
   touch-action: none;
   background: transparent;
-  transition: background var(--transition-fast);
+  flex-shrink: 0;
 }
 
-.cf-split-resizer:hover,
-.cf-split-resizer.dragging {
-  background: var(--bg-surface-active);
+.cf-split-resizer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 3px;
+  width: 1px;
+  background: var(--border-subtle);
+  transition: background-color 0.15s ease;
+}
+
+.cf-split-resizer:hover::before,
+.cf-split-resizer.dragging::before {
+  background: var(--border-strong);
 }
 
 .cf-resizer-handle {
-  width: 3px;
-  height: 28px;
-  border-radius: 2px;
-  background: var(--border-default);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  transition: all var(--transition-fast);
-}
-
-.cf-resizer-handle span {
-  width: 1.5px;
-  height: 1.5px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  display: block;
-}
-
-.cf-split-resizer:hover .cf-resizer-handle,
-.cf-split-resizer.dragging .cf-resizer-handle {
-  background: var(--accent-primary);
-  height: 44px;
-  box-shadow: 0 0 6px var(--border-focus);
-}
-
-.cf-split-resizer:hover .cf-resizer-handle span,
-.cf-split-resizer.dragging .cf-resizer-handle span {
-  background: var(--bg-app);
+  display: none !important;
 }
 
 /* While actively dragging, disable pointer events on canvas & textareas for zero latency */
@@ -857,6 +885,7 @@ body.cf-resizing iframe {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-width: 0;
   overflow: hidden;
   background: var(--bg-app);
 }
@@ -866,46 +895,61 @@ body.cf-resizing iframe {
   align-items: stretch;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
-  padding: 0 8px;
+  padding: 0 4px;
   height: 36px;
   min-height: 36px;
   box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
+  min-width: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease;
+}
+
+.cf-inspector-header::-webkit-scrollbar {
+  display: none;
 }
 
 .cf-tabs {
   display: flex;
   align-items: stretch;
   height: 100%;
-  gap: 2px;
+  gap: 1px;
+  min-width: 0;
 }
 
 .cf-tab {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
-  padding: 0 10px;
+  padding: 0 9px;
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   color: var(--text-muted);
   cursor: pointer;
   position: relative;
   white-space: nowrap;
+  flex-shrink: 0;
   transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .cf-tab:hover {
   color: var(--text-secondary);
   background: rgba(255, 255, 255, 0.02);
+}
+
+.cf-tab:focus-visible {
+  outline: none;
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
 }
 
 .cf-tab.active {
@@ -1754,6 +1798,7 @@ body.cf-resizing iframe {
 }
 
 /* Modern Toolbox Categories & Typography */
+/* Modern Toolbox Categories & Typography */
 .blocklyToolboxCategory {
   display: flex !important;
   align-items: center !important;
@@ -1770,7 +1815,7 @@ body.cf-resizing iframe {
   border-bottom: none !important;
   cursor: pointer !important;
   box-sizing: border-box !important;
-  transition: background-color 0.15s ease !important;
+  transition: background-color 0.15s ease, border-left-color 0.15s ease !important;
 }
 
 .blocklyToolboxCategory:hover {
@@ -1779,7 +1824,14 @@ body.cf-resizing iframe {
 
 .blocklyToolboxCategory.blocklyToolboxSelected,
 .blocklyToolboxSelected {
-  background-color: var(--bg-surface-active) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-left-width: 3px !important;
+}
+
+:root[data-theme='light'] .blocklyToolboxCategory.blocklyToolboxSelected,
+:root[data-theme='light'] .blocklyToolboxSelected {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  border-left-width: 3px !important;
 }
 
 /* Content Container & Alignment */
@@ -1799,10 +1851,10 @@ body.cf-resizing iframe {
 .blocklyTreeLabel {
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
-  font-size: 11px !important;
+  font-size: 11.5px !important;
   font-weight: 500 !important;
   letter-spacing: 0.03em !important;
-  color: var(--text-muted) !important;
+  color: #c4c4cc !important;
   transition: color 0.15s ease !important;
   line-height: 1 !important;
   margin: 0 !important;
@@ -1811,13 +1863,41 @@ body.cf-resizing iframe {
   align-items: center !important;
 }
 
-.blocklyToolboxCategory:hover .blocklyToolboxCategoryLabel,
-.blocklyToolboxCategory.blocklyToolboxSelected .blocklyToolboxCategoryLabel {
-  color: var(--text-primary) !important;
+:root[data-theme='light'] .blocklyToolboxCategoryLabel,
+:root[data-theme='light'] .blocklyTreeLabel {
+  color: #3f3f46 !important;
 }
 
-.blocklyToolboxCategory.blocklyToolboxSelected .blocklyToolboxCategoryLabel {
+.blocklyToolboxCategory:hover .blocklyToolboxCategoryLabel,
+.blocklyToolboxCategory:hover .blocklyTreeLabel {
+  color: #ffffff !important;
+}
+
+:root[data-theme='light'] .blocklyToolboxCategory:hover .blocklyToolboxCategoryLabel,
+:root[data-theme='light'] .blocklyToolboxCategory:hover .blocklyTreeLabel {
+  color: #09090b !important;
+}
+
+.blocklyToolboxCategory.blocklyToolboxSelected .blocklyToolboxCategoryLabel,
+.blocklyToolboxCategory.blocklyToolboxSelected .blocklyTreeLabel,
+.blocklyToolboxSelected .blocklyToolboxCategoryLabel,
+.blocklyToolboxSelected .blocklyTreeLabel {
+  color: #ffffff !important;
   font-weight: 600 !important;
+}
+
+:root[data-theme='light'] .blocklyToolboxCategory.blocklyToolboxSelected .blocklyToolboxCategoryLabel,
+:root[data-theme='light'] .blocklyToolboxCategory.blocklyToolboxSelected .blocklyTreeLabel,
+:root[data-theme='light'] .blocklyToolboxSelected .blocklyToolboxCategoryLabel,
+:root[data-theme='light'] .blocklyToolboxSelected .blocklyTreeLabel {
+  color: #09090b !important;
+  font-weight: 600 !important;
+}
+
+.blocklyToolboxCategory[aria-disabled="true"],
+.blocklyToolboxCategory.blocklyDisabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
 }
 
 .blocklyTreeSeparator {
@@ -2346,6 +2426,8 @@ body.cf-resizing iframe {
   border-radius: 4px;
   padding: 2px;
   gap: 1px;
+  height: 26px;
+  box-sizing: border-box;
 }
 
 .cf-btn-project {
@@ -2354,7 +2436,8 @@ body.cf-resizing iframe {
   justify-content: center;
   gap: 4px;
   padding: 0 8px;
-  height: 22px;
+  height: 20px;
+  line-height: 20px;
   font-size: 11px;
   font-weight: 500;
   color: var(--text-secondary);
@@ -2385,9 +2468,10 @@ body.cf-resizing iframe {
 
 .cf-toolbar-divider {
   width: 1px;
-  height: 18px;
+  height: 16px;
   background: var(--border-subtle);
-  margin: 0 3px;
+  margin: 0 4px;
+  flex-shrink: 0;
 }
 
 .cf-ai-btn-group {
@@ -2402,6 +2486,7 @@ body.cf-resizing iframe {
   gap: 5px;
   padding: 0 9px;
   height: 26px;
+  box-sizing: border-box;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.02em;

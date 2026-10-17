@@ -1040,16 +1040,16 @@ export function EditorPage(): React.JSX.Element {
           {/* Right: Board & Hardware Serial Functions */}
           <div className="cf-hardware-bar">
             {/* Target Board Selector */}
-            <div className="cf-control">
+            <div className="cf-control cf-control-board">
               <label htmlFor="cf-board-select">BOARD</label>
               <select
                 id="cf-board-select"
                 value={selectedBoard}
                 onChange={(e) => setSelectedBoard(e.target.value)}
-                title="Select Target Microcontroller Board"
+                title={`Target Board: ${SUPPORTED_BOARDS.find((b) => b.id === selectedBoard)?.name || selectedBoard}`}
               >
                 {SUPPORTED_BOARDS.map((b) => (
-                  <option key={b.id} value={b.id}>
+                  <option key={b.id} value={b.id} title={b.name}>
                     {b.name}
                   </option>
                 ))}
@@ -1057,19 +1057,24 @@ export function EditorPage(): React.JSX.Element {
             </div>
 
             {/* Port Selector */}
-            <div className="cf-control">
+            <div className="cf-control cf-control-port">
               <label htmlFor="cf-port-select">PORT</label>
               <select
                 id="cf-port-select"
                 value={selectedPort}
                 onChange={(e) => setSelectedPort(e.target.value)}
                 disabled={isConnected || isConnecting}
+                title={
+                  selectedPort
+                    ? `Selected Port: ${ports.find((p) => p.path === selectedPort)?.friendlyName || selectedPort}`
+                    : 'Select Serial COM Port'
+                }
               >
                 {ports.length === 0 ? (
                   <option value="">No Ports Detected</option>
                 ) : (
                   ports.map((p) => (
-                    <option key={p.path} value={p.path}>
+                    <option key={p.path} value={p.path} title={p.friendlyName || p.path}>
                       {p.friendlyName || p.path}
                     </option>
                   ))
@@ -1079,7 +1084,7 @@ export function EditorPage(): React.JSX.Element {
 
             {/* Refresh Ports Button */}
             <button
-              className="cf-btn-sm"
+              className="cf-btn-sm cf-btn-refresh-ports"
               onClick={refreshPorts}
               disabled={isScanning || isConnected || isConnecting}
               title="Scan for connected hardware"
@@ -1103,13 +1108,14 @@ export function EditorPage(): React.JSX.Element {
             </button>
 
             {/* Baud Rate Picker */}
-            <div className="cf-control">
+            <div className="cf-control cf-control-baud">
               <label htmlFor="cf-baud-select">BAUD</label>
               <select
                 id="cf-baud-select"
                 value={selectedBaud}
                 onChange={(e) => handleBaudChange(Number(e.target.value))}
                 disabled={isConnected || isConnecting}
+                title={`Baud Rate: ${selectedBaud} bps`}
               >
                 {BAUD_RATES.map((b) => (
                   <option key={b} value={b}>
@@ -1121,9 +1127,16 @@ export function EditorPage(): React.JSX.Element {
 
             {/* Connect / Disconnect Action Button */}
             <button
-              className={`cf-btn ${isConnected ? 'cf-btn-disconnect' : 'cf-btn-primary'}`}
+              className={`cf-btn cf-btn-connect-toggle ${isConnected ? 'cf-btn-disconnect' : 'cf-btn-primary'}`}
               onClick={toggleConnection}
               disabled={isConnecting || (!selectedPort && !isConnected)}
+              title={
+                isConnected
+                  ? 'Disconnect from current serial port'
+                  : !selectedPort
+                    ? 'Select a port to connect'
+                    : `Connect to ${selectedPort} at ${selectedBaud} bps`
+              }
             >
               {isConnecting ? 'Connecting' : isConnected ? 'Disconnect' : 'Connect'}
             </button>
@@ -1277,23 +1290,13 @@ export function EditorPage(): React.JSX.Element {
             role="separator"
             aria-orientation="vertical"
             title="Drag to resize panels (Double-click to reset to 58%)"
-          >
-            <div className="cf-resizer-handle">
-              <span />
-              <span />
-              <span />
-            </div>
-          </div>
+          />
         )}
 
         {/* Right Pane: Inspector & Engineering Tools */}
         <section
           className="cf-inspector-pane"
-          style={
-            viewMode === 'split'
-              ? { flex: `0 0 ${100 - splitRatio}%`, maxWidth: `${100 - splitRatio}%` }
-              : undefined
-          }
+          style={viewMode === 'split' ? { flex: '1 1 0%', minWidth: 0 } : undefined}
         >
           {/* Tab Switcher */}
           <div className="cf-inspector-header">
@@ -1301,6 +1304,13 @@ export function EditorPage(): React.JSX.Element {
               <button
                 className={`cf-tab ${activeTab === 'terminal' ? 'active' : ''}`}
                 onClick={() => setActiveTab('terminal')}
+                onFocus={(e) =>
+                  e.currentTarget.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'nearest'
+                  })
+                }
                 role="tab"
                 aria-selected={activeTab === 'terminal'}
               >
@@ -1310,6 +1320,13 @@ export function EditorPage(): React.JSX.Element {
               <button
                 className={`cf-tab ${activeTab === 'code' ? 'active' : ''}`}
                 onClick={() => setActiveTab('code')}
+                onFocus={(e) =>
+                  e.currentTarget.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'nearest'
+                  })
+                }
                 role="tab"
                 aria-selected={activeTab === 'code'}
               >
@@ -1318,6 +1335,13 @@ export function EditorPage(): React.JSX.Element {
               <button
                 className={`cf-tab ${activeTab === 'build' ? 'active' : ''}`}
                 onClick={() => setActiveTab('build')}
+                onFocus={(e) =>
+                  e.currentTarget.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'nearest'
+                  })
+                }
                 role="tab"
                 aria-selected={activeTab === 'build'}
               >
@@ -1332,6 +1356,13 @@ export function EditorPage(): React.JSX.Element {
               <button
                 className={`cf-tab ${activeTab === 'telemetry' ? 'active' : ''}`}
                 onClick={() => setActiveTab('telemetry')}
+                onFocus={(e) =>
+                  e.currentTarget.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'nearest'
+                  })
+                }
                 role="tab"
                 aria-selected={activeTab === 'telemetry'}
               >
@@ -1344,6 +1375,13 @@ export function EditorPage(): React.JSX.Element {
               <button
                 className={`cf-tab ${activeTab === 'device' ? 'active' : ''}`}
                 onClick={() => setActiveTab('device')}
+                onFocus={(e) =>
+                  e.currentTarget.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'nearest'
+                  })
+                }
                 role="tab"
                 aria-selected={activeTab === 'device'}
               >
@@ -1353,6 +1391,13 @@ export function EditorPage(): React.JSX.Element {
               <button
                 className={`cf-tab ${activeTab === 'copilot' ? 'active' : ''}`}
                 onClick={() => setActiveTab('copilot')}
+                onFocus={(e) =>
+                  e.currentTarget.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'nearest'
+                  })
+                }
                 role="tab"
                 aria-selected={activeTab === 'copilot'}
               >

@@ -1,12 +1,12 @@
-# CircuitForge — Phase-Wise Project Roadmap and Architecture
+# Hepha — Phase-Wise Project Roadmap and Architecture
 
-> **CircuitForge**: A visual IoT development environment that translates visual logic blocks into compiled embedded hardware firmware through AI-assisted programming.
+> **Hepha**: A visual IoT development environment that translates visual logic blocks into compiled embedded hardware firmware through AI-assisted programming.
 
 ---
 
 ## 1. System Architecture
 
-CircuitForge follows an isolated multi-tier desktop architecture designed for hardware reliability, strict context isolation, and modular feature expansion:
+Hepha follows an isolated multi-tier desktop architecture designed for hardware reliability, strict context isolation, and modular feature expansion:
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -185,7 +185,7 @@ graph TD
 ---
 
 ### Milestone v0.3 — Embedded Compilation and One-Click Flashing (Completed)
-*Primary Objective: Eliminate external IDE requirements by embedding local compilation and firmware flashing directly into CircuitForge.*
+*Primary Objective: Eliminate external IDE requirements by embedding local compilation and firmware flashing directly into Hepha.*
 
 #### Phase 7: Headless Embedded Toolchain Integration (Completed)
 - [x] Integrate bundled `arduino-cli` binary manager in the Electron main process.
@@ -197,14 +197,14 @@ graph TD
 - **Gate / Definition of Done**: `arduino-cli` runs headlessly from the Electron main process and reports installed cores.
 
 #### Phase 8: One-Click Compile and Upload Pipeline (Completed)
-- [x] Create temporary sketch builder in system cache (`%TEMP%/circuitforge_builds/`).
+- [x] Create temporary sketch builder in system cache (`%TEMP%/Hepha_builds/`).
 - [x] Implement `compile` IPC: static validation and `arduino-cli compile --fqbn <board> <sketchPath>`.
 - [x] Implement `upload` IPC:
   - Temporarily releases the active Serial Monitor port lock.
   - Calls `arduino-cli upload -p <port> --fqbn <board> <sketchPath>`.
   - Automatically re-attaches the Serial Monitor once flashing completes.
 - [x] Beginner-friendly compilation error translator (translates cryptic gcc and avrdude compiler errors into human explanations).
-- **Gate / Definition of Done**: User clicks "Upload", CircuitForge compiles the visual program, flashes it to a connected Arduino/ESP32, and immediately resumes the serial monitor to display running output.
+- **Gate / Definition of Done**: User clicks "Upload", Hepha compiles the visual program, flashes it to a connected Arduino/ESP32, and immediately resumes the serial monitor to display running output.
 
 ---
 
@@ -221,7 +221,7 @@ graph TD
 - **Gate / Definition of Done**: Microcontroller sending sensor readings over serial automatically plots live curves on the dashboard.
 
 #### Phase 10: Project Storage and Starter Library (Completed)
-- [x] Standardize `.circuitforge` project file format (JSON bundle containing blocks, board profile, baud rate, and metadata).
+- [x] Standardize `.Hepha` project file format (JSON bundle containing blocks, board profile, baud rate, and metadata).
 - [x] Project File Menu: New, Open, Save, Save As with native Electron file dialogs and keyboard shortcuts (`Ctrl+S`, `Ctrl+O`, `Ctrl+N`).
 - [x] Built-in Starter Project Library Modal with one-click loading:
   - "Blink & Fade" (Digital/PWM basics)

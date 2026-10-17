@@ -1,4 +1,4 @@
-# CircuitForge
+# Hepha
 
 > **A visual IoT development environment that translates visual logic blocks into compiled embedded hardware firmware through AI-assisted programming.**
 
@@ -6,7 +6,7 @@
 
 ## Overview
 
-CircuitForge is a desktop application designed to make microcontroller and IoT development accessible, visual, and reliable. By bridging visual block programming with real-world embedded hardware and AI guidance, CircuitForge enables learners, hobbyists, and developers to build embedded systems without getting blocked by toolchain configuration or boilerplate syntax errors.
+Hepha is a desktop application designed to make microcontroller and IoT development accessible, visual, and reliable. By bridging visual block programming with real-world embedded hardware and AI guidance, Hepha enables learners, hobbyists, and developers to build embedded systems without getting blocked by toolchain configuration or boilerplate syntax errors.
 
 ---
 
@@ -30,7 +30,7 @@ All roadmap milestones (**v0.1**, **v0.2**, **v0.3**, **v0.4**, **v0.5**, **v0.6
 - [x] **v0.4: Live Telemetry Dashboard & Project Storage**:
   - Multi-format serial telemetry parser (JSON, Key-Value, and CSV).
   - Real-time HTML5 Canvas oscilloscope with auto-scaling Y-axis, channel filter chips, and metric cards (Latest, Min, Avg, Max).
-  - Native `.circuitforge` project file format with save, open, dirty state tracking, and keyboard shortcuts (`Ctrl+S`, `Ctrl+O`, `Ctrl+N`).
+  - Native `.Hepha` project file format with save, open, dirty state tracking, and keyboard shortcuts (`Ctrl+S`, `Ctrl+O`, `Ctrl+N`).
   - Built-in Starter Project Library with 5 one-click loadable templates (Blink & Fade, Obstacle Avoidance, Weather Station, RGB Mood Lamp, Gas & Smoke Detector).
 - [x] **v0.5: Code-to-Blocks Bidirectional Sync**:
   - Interactive & editable code editor with line numbers gutter, scroll sync, and tab indentation.
@@ -76,7 +76,7 @@ See [ROADMAP.md](./ROADMAP.md) for detailed tasks and architecture breakdown.
 ## Repository Structure
 
 ```text
-CircuitForge/
+Hepha/
 ├── app/                        # Electron desktop application
 │   ├── src/
 │   │   ├── main/               # Electron Main Process (OS, serial & hardware I/O)
@@ -108,7 +108,7 @@ CircuitForge/
 
 1. **Navigate to the app directory**:
    ```powershell
-   cd Z:\CircuitForge\app
+   cd Z:\Hepha\app
    ```
 
 2. **Install dependencies**:
@@ -148,8 +148,8 @@ CircuitForge/
 
 ## License
 
-CircuitForge is licensed under the
-**CircuitForge Non-Commercial Source-Available License, Version 1.0**.
+Hepha is licensed under the
+**Hepha Non-Commercial Source-Available License, Version 1.0**.
 
 The source code is available for personal, educational, academic,
 research, experimentation, and other permitted non-commercial use.

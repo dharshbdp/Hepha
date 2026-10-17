@@ -1,5 +1,5 @@
 /**
- * CircuitForge Simulator Module (Reserved for Milestone v0.4+)
+ * Hepha Simulator Module (Reserved for Milestone v0.4+)
  * Provides virtual microcontroller emulation and live sensor simulation.
  */
 

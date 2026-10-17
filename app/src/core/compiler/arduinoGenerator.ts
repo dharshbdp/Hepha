@@ -71,7 +71,7 @@ export class ArduinoGenerator extends Blockly.CodeGenerator {
 
     return [
       '// ==========================================',
-      '// CircuitForge v0.2 — Generated Sketch',
+      '// Hepha — Generated Sketch',
       '// Target: Arduino Compatible (C++)',
       '// ==========================================',
       '',

@@ -1,5 +1,5 @@
 /**
- * CircuitForge AI Copilot Module (Reserved for Milestone v1.0)
+ * Hepha AI Copilot Module (Reserved for Milestone v1.0)
  * Provides context-aware circuit explanation and natural language to block synthesis.
  */
 

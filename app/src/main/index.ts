@@ -15,7 +15,7 @@ function createWindow(): void {
     minHeight: 600,
     show: false,
     autoHideMenuBar: true,
-    title: 'CircuitForge',
+    title: 'Hepha',
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -47,7 +47,7 @@ function createWindow(): void {
 // Electron lifecycle initialization
 app.whenReady().then(() => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.circuitforge.app')
+  electronApp.setAppUserModelId('io.hepha.desktop')
 
   // Default shortcuts & DevTools in development
   app.on('browser-window-created', (_, window) => {

@@ -1,4 +1,4 @@
-import type { CircuitForgeProject } from '../../../shared/types'
+import type { HephaProject } from '../../../shared/types'
 
 export interface StarterProject {
   id: string
@@ -8,7 +8,7 @@ export interface StarterProject {
   boardId: string
   baudRate: number
   hardwareTags: string[]
-  project: CircuitForgeProject
+  project: HephaProject
 }
 
 export const STARTER_PROJECTS: StarterProject[] = [

@@ -17,7 +17,7 @@ import {
 } from '../ai/aiManager'
 
 import type {
-  CircuitForgeProject,
+  HephaProject,
   SaveProjectResult,
   OpenProjectResult,
   ExplainCircuitRequest,
@@ -103,12 +103,12 @@ export function registerIpcHandlers(getMainWindow: () => BrowserWindow | null): 
     }
   )
 
-  // Project Storage: Save project (.circuitforge JSON)
+  // Project Storage: Save project (.hepha / .circuitforge JSON)
   ipcMain.handle(
     'project:save',
     async (
       _,
-      { project, filePath }: { project: CircuitForgeProject; filePath?: string }
+      { project, filePath }: { project: HephaProject; filePath?: string }
     ): Promise<SaveProjectResult> => {
       try {
         let targetPath = filePath
@@ -117,17 +117,23 @@ export function registerIpcHandlers(getMainWindow: () => BrowserWindow | null): 
           const sanitizedName = (project.name || 'project').replace(/[/\\?%*:|"<>]/g, '_')
           const saveDialogResult = await (win
             ? dialog.showSaveDialog(win, {
-                title: 'Save CircuitForge Project',
-                defaultPath: `${sanitizedName}.circuitforge`,
+                title: 'Save Hepha Project',
+                defaultPath: `${sanitizedName}.hepha`,
                 filters: [
-                  { name: 'CircuitForge Project (*.circuitforge)', extensions: ['circuitforge'] }
+                  {
+                    name: 'Hepha Project (*.hepha, *.circuitforge)',
+                    extensions: ['hepha', 'circuitforge']
+                  }
                 ]
               })
             : dialog.showSaveDialog({
-                title: 'Save CircuitForge Project',
-                defaultPath: `${sanitizedName}.circuitforge`,
+                title: 'Save Hepha Project',
+                defaultPath: `${sanitizedName}.hepha`,
                 filters: [
-                  { name: 'CircuitForge Project (*.circuitforge)', extensions: ['circuitforge'] }
+                  {
+                    name: 'Hepha Project (*.hepha, *.circuitforge)',
+                    extensions: ['hepha', 'circuitforge']
+                  }
                 ]
               }))
 
@@ -147,22 +153,28 @@ export function registerIpcHandlers(getMainWindow: () => BrowserWindow | null): 
     }
   )
 
-  // Project Storage: Open project (.circuitforge JSON)
+  // Project Storage: Open project (.hepha / .circuitforge JSON)
   ipcMain.handle('project:open', async (): Promise<OpenProjectResult> => {
     try {
       const win = getMainWindow()
       const openDialogResult = await (win
         ? dialog.showOpenDialog(win, {
-            title: 'Open CircuitForge Project',
+            title: 'Open Hepha Project',
             filters: [
-              { name: 'CircuitForge Project (*.circuitforge)', extensions: ['circuitforge'] }
+              {
+                name: 'Hepha Project (*.hepha, *.circuitforge)',
+                extensions: ['hepha', 'circuitforge']
+              }
             ],
             properties: ['openFile']
           })
         : dialog.showOpenDialog({
-            title: 'Open CircuitForge Project',
+            title: 'Open Hepha Project',
             filters: [
-              { name: 'CircuitForge Project (*.circuitforge)', extensions: ['circuitforge'] }
+              {
+                name: 'Hepha Project (*.hepha, *.circuitforge)',
+                extensions: ['hepha', 'circuitforge']
+              }
             ],
             properties: ['openFile']
           }))
@@ -177,12 +189,12 @@ export function registerIpcHandlers(getMainWindow: () => BrowserWindow | null): 
 
       const selectedPath = openDialogResult.filePaths[0]
       const raw = await fs.readFile(selectedPath, 'utf-8')
-      const parsed = JSON.parse(raw) as CircuitForgeProject
+      const parsed = JSON.parse(raw) as HephaProject
 
       if (!parsed || parsed.formatVersion !== '1.0' || !parsed.workspace) {
         return {
           success: false,
-          error: 'Invalid or unsupported CircuitForge project file format.'
+          error: 'Invalid or unsupported Hepha project file format.'
         }
       }
 

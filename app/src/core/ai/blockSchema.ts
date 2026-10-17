@@ -1,5 +1,5 @@
 /**
- * CircuitForge Block Taxonomy Specification & JSON Schema
+ * Hepha Block Taxonomy Specification & JSON Schema
  * Defines the schema of available visual blocks for LLM prompt context and structure validation.
  */
 
@@ -326,7 +326,7 @@ export const BLOCK_TAXONOMY: BlockSchemaEntry[] = [
  */
 export function getBlockSchemaPrompt(): string {
   return `
-CIRCUITFORGE BLOCK TAXONOMY & GRAMMAR:
+HEPHA BLOCK TAXONOMY & GRAMMAR:
 You synthesize visual logic programs for embedded microcontrollers. The blocks are structured as Blockly AST nodes.
 Supported Block Types:
 - GPIO:

@@ -43,7 +43,7 @@ export function translateCompilerError(stderr: string, stdout: string = ''): str
 
   // 7. Invalid FQBN or Board Core Not Installed
   if (/Platform '.*' not installed|Unknown FQBN/i.test(combined)) {
-    return 'Board Core Missing: The compiler platform for the selected board is not installed in the toolchain. Run toolchain installation in CircuitForge.'
+    return 'Board Core Missing: The compiler platform for the selected board is not installed in the toolchain. Run toolchain installation in Hepha.'
   }
 
   // 8. General compilation failure fallback

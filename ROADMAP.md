@@ -197,7 +197,7 @@ graph TD
 - **Gate / Definition of Done**: `arduino-cli` runs headlessly from the Electron main process and reports installed cores.
 
 #### Phase 8: One-Click Compile and Upload Pipeline (Completed)
-- [x] Create temporary sketch builder in system cache (`%TEMP%/Hepha_builds/`).
+- [x] Create temporary sketch builder in system cache (`%TEMP%/hepha_builds/`).
 - [x] Implement `compile` IPC: static validation and `arduino-cli compile --fqbn <board> <sketchPath>`.
 - [x] Implement `upload` IPC:
   - Temporarily releases the active Serial Monitor port lock.
@@ -221,7 +221,7 @@ graph TD
 - **Gate / Definition of Done**: Microcontroller sending sensor readings over serial automatically plots live curves on the dashboard.
 
 #### Phase 10: Project Storage and Starter Library (Completed)
-- [x] Standardize `.Hepha` project file format (JSON bundle containing blocks, board profile, baud rate, and metadata).
+- [x] Standardize `.hepha` project file format (JSON bundle containing blocks, board profile, baud rate, and metadata, with backward compatibility for `.circuitforge` files).
 - [x] Project File Menu: New, Open, Save, Save As with native Electron file dialogs and keyboard shortcuts (`Ctrl+S`, `Ctrl+O`, `Ctrl+N`).
 - [x] Built-in Starter Project Library Modal with one-click loading:
   - "Blink & Fade" (Digital/PWM basics)

@@ -1,13 +1,13 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import type {
-  CircuitForgeAPI,
+import {
+  HephaAPI,
   ConnectionState,
   SerialPortDescriptor,
   ToolchainStatus,
   CompileResult,
   UploadResult,
-  CircuitForgeProject,
+  HephaProject,
   SaveProjectResult,
   OpenProjectResult,
   ExplainCircuitRequest,
@@ -20,7 +20,7 @@ import type {
 } from '../shared/types'
 
 // Custom APIs for renderer
-const api: CircuitForgeAPI = {
+const api: HephaAPI = {
   listSerialPorts: (): Promise<SerialPortDescriptor[]> => ipcRenderer.invoke('serial:list-ports'),
 
   connectSerial: (path: string, baudRate: number): Promise<boolean> =>
@@ -66,7 +66,7 @@ const api: CircuitForgeAPI = {
     }
   },
 
-  saveProject: (project: CircuitForgeProject, filePath?: string): Promise<SaveProjectResult> =>
+  saveProject: (project: HephaProject, filePath?: string): Promise<SaveProjectResult> =>
     ipcRenderer.invoke('project:save', { project, filePath }),
 
   openProject: (): Promise<OpenProjectResult> => ipcRenderer.invoke('project:open'),

@@ -1,4 +1,4 @@
-name: Release CircuitForge
+name: Release Hepha
 
 on:
   push:

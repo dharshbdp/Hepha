@@ -1,5 +1,5 @@
 /**
- * CircuitForge Static Hardware & Pin Conflict Diagnostics Engine
+ * Hepha Static Hardware & Pin Conflict Diagnostics Engine
  * Milestone v0.6 Phase 15: Analyzes active Blockly blocks against board hardware profiles
  * to catch pin collisions, PWM timer mismatches, voltage domain hazards, and input-only violations.
  */

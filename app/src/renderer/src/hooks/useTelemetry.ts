@@ -97,7 +97,7 @@ export function useTelemetry(maxHistory: number = DEFAULT_MAX_HISTORY): UseTelem
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `circuitforge_telemetry_${Date.now()}.csv`
+    link.download = `hepha_telemetry_${Date.now()}.csv`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -119,7 +119,7 @@ export function useTelemetry(maxHistory: number = DEFAULT_MAX_HISTORY): UseTelem
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `circuitforge_telemetry_${Date.now()}.json`
+    link.download = `hepha_telemetry_${Date.now()}.json`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)

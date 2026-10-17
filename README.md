@@ -6,7 +6,7 @@
 
 ## Overview
 
-Hepha is a desktop application designed to make microcontroller and IoT development accessible, visual, and reliable. By bridging visual block programming with real-world embedded hardware and AI guidance, Hepha enables learners, hobbyists, and developers to build embedded systems without getting blocked by toolchain configuration or boilerplate syntax errors.
+Hepha (derived from *Hephaestus*, the Greek mythological god of divine blacksmithing, artisans, and mechanical invention) is a desktop application designed to make microcontroller and IoT development accessible, visual, and reliable. By bridging visual block programming with real-world embedded hardware and AI guidance, Hepha enables learners, hobbyists, and developers to build embedded systems without getting blocked by toolchain configuration or boilerplate syntax errors.
 
 ---
 
@@ -30,7 +30,7 @@ All roadmap milestones (**v0.1**, **v0.2**, **v0.3**, **v0.4**, **v0.5**, **v0.6
 - [x] **v0.4: Live Telemetry Dashboard & Project Storage**:
   - Multi-format serial telemetry parser (JSON, Key-Value, and CSV).
   - Real-time HTML5 Canvas oscilloscope with auto-scaling Y-axis, channel filter chips, and metric cards (Latest, Min, Avg, Max).
-  - Native `.Hepha` project file format with save, open, dirty state tracking, and keyboard shortcuts (`Ctrl+S`, `Ctrl+O`, `Ctrl+N`).
+  - Native `.hepha` project file format (with backward-compatible support for `.circuitforge` files) with save, open, dirty state tracking, and keyboard shortcuts (`Ctrl+S`, `Ctrl+O`, `Ctrl+N`).
   - Built-in Starter Project Library with 5 one-click loadable templates (Blink & Fade, Obstacle Avoidance, Weather Station, RGB Mood Lamp, Gas & Smoke Detector).
 - [x] **v0.5: Code-to-Blocks Bidirectional Sync**:
   - Interactive & editable code editor with line numbers gutter, scroll sync, and tab indentation.

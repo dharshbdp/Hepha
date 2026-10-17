@@ -28,8 +28,8 @@ if (Blockly.Flyout?.prototype) {
   }
 }
 
-// 2. Register CircuitForgeFlyout with Blockly registry
-class CircuitForgeFlyout extends Blockly.VerticalFlyout {
+// 2. Register HephaFlyout with Blockly registry
+class HephaFlyout extends Blockly.VerticalFlyout {
   override getFlyoutScale(): number {
     return FIXED_FLYOUT_SCALE
   }
@@ -63,7 +63,7 @@ class CircuitForgeFlyout extends Blockly.VerticalFlyout {
 Blockly.registry.register(
   Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
   Blockly.registry.DEFAULT,
-  CircuitForgeFlyout,
+  HephaFlyout,
   true
 )
 
@@ -370,7 +370,7 @@ const toolboxConfig = {
           kind: 'block',
           type: 'serial_print',
           inputs: {
-            CONTENT: { shadow: { type: 'text', fields: { TEXT: 'Hello CircuitForge' } } }
+            CONTENT: { shadow: { type: 'text', fields: { TEXT: 'Hello Hepha' } } }
           }
         }
       ]

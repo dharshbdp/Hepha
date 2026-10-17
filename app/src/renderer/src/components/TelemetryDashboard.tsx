@@ -310,8 +310,7 @@ export function TelemetryDashboard({
           <div className="cf-telemetry-empty-hint">
             <div className="cf-hint-title">Awaiting Telemetry Stream</div>
             <p className="cf-hint-desc">
-              Connect a microcontroller and output data via serial. CircuitForge automatically
-              detects:
+              Connect a microcontroller and output data via serial. Hepha automatically detects:
             </p>
             <div className="cf-hint-code-grid">
               <div className="cf-hint-item">

@@ -46,7 +46,7 @@ export interface UploadResult {
 }
 
 // Project File & Storage (Milestone v0.4 Phase 10)
-export interface CircuitForgeProject {
+export interface HephaProject {
   formatVersion: '1.0'
   name: string
   description?: string
@@ -56,6 +56,7 @@ export interface CircuitForgeProject {
   createdAt: string
   updatedAt: string
 }
+export type CircuitForgeProject = HephaProject
 
 export interface SaveProjectResult {
   success: boolean
@@ -66,7 +67,7 @@ export interface SaveProjectResult {
 
 export interface OpenProjectResult {
   success: boolean
-  project?: CircuitForgeProject
+  project?: HephaProject
   filePath?: string
   canceled?: boolean
   error?: string
@@ -137,7 +138,7 @@ export interface AiTranspileResult {
   warnings?: string[]
 }
 
-export interface CircuitForgeAPI {
+export interface HephaAPI {
   listSerialPorts: () => Promise<SerialPortDescriptor[]>
   connectSerial: (path: string, baudRate: number) => Promise<boolean>
   disconnectSerial: () => Promise<boolean>
@@ -154,7 +155,7 @@ export interface CircuitForgeAPI {
   onToolchainLog: (callback: (log: string) => void) => () => void
 
   // Project Storage & File Operations (Milestone v0.4 Phase 10)
-  saveProject: (project: CircuitForgeProject, filePath?: string) => Promise<SaveProjectResult>
+  saveProject: (project: HephaProject, filePath?: string) => Promise<SaveProjectResult>
   openProject: () => Promise<OpenProjectResult>
 
   // AI Hardware Copilot (Milestone v0.6 Phase 13 & 14)
@@ -166,3 +167,5 @@ export interface CircuitForgeAPI {
   // AI Code-to-Blocks Transpiler (Milestone v0.7 Phase 16)
   transpileSketch: (request: AiTranspileRequest) => Promise<AiTranspileResult>
 }
+
+export type CircuitForgeAPI = HephaAPI

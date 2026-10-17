@@ -1,5 +1,5 @@
 /**
- * CircuitForge C++ to Blockly AST Parser
+ * Hepha C++ to Blockly AST Parser
  * Converts Arduino C++ source code into Blockly BlockState JSON.
  */
 
@@ -264,7 +264,7 @@ function parseStatement(stmt: string): ParsedBlock | null {
   if (!trimmed || trimmed === ';') return null
 
   // Ignore hardware setup & initialization boilerplate that is automatically managed
-  // by CircuitForge generators (e.g. Serial.begin, servo.attach, dht.begin, strip.begin)
+  // by Hepha generators (e.g. Serial.begin, servo.attach, dht.begin, strip.begin)
   if (
     /^Serial\.begin\s*\([^)]*\);?$/i.test(trimmed) ||
     /^\w+\.attach\s*\([^)]*\);?$/i.test(trimmed) ||

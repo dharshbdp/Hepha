@@ -6,7 +6,7 @@ import { loadWorkspace, serializeWorkspace } from '@core/graph/graphSerializer'
 import { SUPPORTED_BOARDS } from '@hardware'
 import type {
   CompileResult,
-  CircuitForgeProject,
+  HephaProject,
   BlockSynthesisResult,
   AiTranspileResult
 } from '@shared/types'
@@ -55,7 +55,9 @@ export function EditorPage(): React.JSX.Element {
   // Resizable Split Pane Divider state
   const [splitRatio, setSplitRatio] = useState<number>(() => {
     try {
-      const saved = localStorage.getItem('circuitforge_split_ratio')
+      const saved =
+        localStorage.getItem('hepha_split_ratio') ||
+        localStorage.getItem('circuitforge_split_ratio')
       if (saved) {
         const val = parseFloat(saved)
         if (!isNaN(val) && val >= 20 && val <= 80) return val
@@ -77,7 +79,7 @@ export function EditorPage(): React.JSX.Element {
   const handleSplitDoubleClick = (): void => {
     setSplitRatio(58)
     try {
-      localStorage.setItem('circuitforge_split_ratio', '58')
+      localStorage.setItem('hepha_split_ratio', '58')
     } catch {
       // ignore
     }
@@ -100,7 +102,7 @@ export function EditorPage(): React.JSX.Element {
       setIsDraggingSplit(false)
       setSplitRatio((prev) => {
         try {
-          localStorage.setItem('circuitforge_split_ratio', prev.toString())
+          localStorage.setItem('hepha_split_ratio', prev.toString())
         } catch {
           // ignore
         }
@@ -315,7 +317,7 @@ export function EditorPage(): React.JSX.Element {
   const handleSaveProject = async (saveAs = false): Promise<void> => {
     if (!workspaceRef.current) return
     const serialized = serializeWorkspace(workspaceRef.current)
-    const projectData: CircuitForgeProject = {
+    const projectData: HephaProject = {
       formatVersion: '1.0',
       name: projectName,
       boardId: selectedBoard,
@@ -334,10 +336,11 @@ export function EditorPage(): React.JSX.Element {
         result.filePath
           .split(/[\\/]/)
           .pop()
-          ?.replace(/\.circuitforge$/i, '') || projectName
+          ?.replace(/\.(hepha|circuitforge)$/i, '') || projectName
       setProjectName(baseName)
       setIsDirty(false)
-      showNotification(`Saved: ${baseName}.circuitforge`)
+      const ext = result.filePath.endsWith('.circuitforge') ? '.circuitforge' : '.hepha'
+      showNotification(`Saved: ${baseName}${ext}`)
     } else if (result.error) {
       showNotification(`Save Error: ${result.error}`)
     }
@@ -583,7 +586,7 @@ export function EditorPage(): React.JSX.Element {
 
   const handleExportCode = (): void => {
     const isPy = selectedLanguage === 'python'
-    const filename = isPy ? 'main.py' : 'circuitforge_sketch.ino'
+    const filename = isPy ? 'main.py' : 'hepha_sketch.ino'
     const mimeType = isPy ? 'text/x-python;charset=utf-8' : 'text/plain;charset=utf-8'
     const blob = new Blob([activeCode], { type: mimeType })
     const url = URL.createObjectURL(blob)
@@ -731,7 +734,7 @@ export function EditorPage(): React.JSX.Element {
                   <line x1="1" y1="14" x2="4" y2="14" />
                 </svg>
               </span>
-              <span className="cf-brand-title">CircuitForge</span>
+              <span className="cf-brand-title">Hepha</span>
               <span className="cf-brand-version">v0.5</span>
             </div>
 

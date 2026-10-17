@@ -1,5 +1,5 @@
 /**
- * CircuitForge Offline Intent Synthesizer
+ * Hepha Offline Intent Synthesizer
  * Deterministic natural language compiler translating common IoT and microcontroller
  * requirements into valid, connected Blockly blocks and idiomatic Arduino C++.
  */

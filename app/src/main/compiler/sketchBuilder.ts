@@ -14,11 +14,11 @@ export interface PreparedSketch {
  */
 export async function prepareSketch(
   code: string,
-  sketchName = 'circuitforge_sketch'
+  sketchName = 'hepha_sketch'
 ): Promise<PreparedSketch> {
   const timestamp = Date.now()
   const randomSuffix = Math.random().toString(36).substring(2, 8)
-  const baseDir = join(tmpdir(), 'circuitforge_builds', `${timestamp}_${randomSuffix}`)
+  const baseDir = join(tmpdir(), 'hepha_builds', `${timestamp}_${randomSuffix}`)
   const sketchDir = join(baseDir, sketchName)
   const sketchPath = join(sketchDir, `${sketchName}.ino`)
 

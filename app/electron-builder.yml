@@ -1,6 +1,6 @@
-appId: io.circuitforge.desktop
-productName: CircuitForge
-copyright: Copyright © 2026 CircuitForge Team
+appId: io.hepha.desktop
+productName: Hepha
+copyright: Copyright © 2026 Hepha Team
 directories:
   buildResources: build
   output: dist
@@ -14,7 +14,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: CircuitForge
+  executableName: Hepha
   icon: build/icon.ico
   target:
     - target: nsis
@@ -24,15 +24,15 @@ win:
       arch:
         - x64
 nsis:
-  artifactName: CircuitForge-${version}-Windows-Setup.${ext}
-  shortcutName: CircuitForge
-  uninstallDisplayName: CircuitForge
+  artifactName: Hepha-${version}-Windows-Setup.${ext}
+  shortcutName: Hepha
+  uninstallDisplayName: Hepha
   createDesktopShortcut: always
   createStartMenuShortcut: true
   oneClick: false
   allowToChangeInstallationDirectory: true
 portable:
-  artifactName: CircuitForge-${version}-Windows-Portable.${ext}
+  artifactName: Hepha-${version}-Windows-Portable.${ext}
 mac:
   icon: build/icon.icns
   target:
@@ -53,7 +53,7 @@ mac:
     - NSDownloadsFolderUsageDescription: Application requests access to downloads for firmware and library downloads.
   notarize: false
 dmg:
-  artifactName: CircuitForge-${version}-macOS-${arch}.${ext}
+  artifactName: Hepha-${version}-macOS-${arch}.${ext}
 linux:
   icon: build/icon.png
   target:
@@ -63,12 +63,12 @@ linux:
     - target: deb
       arch:
         - x64
-  maintainer: CircuitForge Team <support@circuitforge.dev>
+  maintainer: Hepha Team <support@hepha.dev>
   category: Development
 appImage:
-  artifactName: CircuitForge-${version}-Linux-${arch}.${ext}
+  artifactName: Hepha-${version}-Linux-${arch}.${ext}
 deb:
-  artifactName: CircuitForge-${version}-Linux-${arch}.${ext}
+  artifactName: Hepha-${version}-Linux-${arch}.${ext}
 npmRebuild: false
 publish:
   provider: github

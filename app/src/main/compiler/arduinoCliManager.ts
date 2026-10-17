@@ -103,7 +103,7 @@ export async function executeArduinoCli(
 
   if (!binaryPath) {
     throw new Error(
-      'arduino-cli executable not found. Please install arduino-cli or place it in CircuitForge toolchain directory.'
+      'arduino-cli executable not found. Please install arduino-cli or place it in Hepha toolchain directory.'
     )
   }
 

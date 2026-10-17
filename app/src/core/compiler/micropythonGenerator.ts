@@ -60,7 +60,7 @@ export class MicroPythonGenerator extends Blockly.CodeGenerator {
 
     return [
       '# ==========================================',
-      '# CircuitForge v0.2 — Generated MicroPython',
+      '# Hepha — Generated MicroPython',
       '# Target: MicroPython Compatible (ESP32 / RP2040)',
       '# ==========================================',
       '',

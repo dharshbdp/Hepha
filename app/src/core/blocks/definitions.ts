@@ -4,8 +4,21 @@ import { ARDUINO_UNO_DIGITAL_PINS, ARDUINO_UNO_ANALOG_PINS } from '@hardware'
 const DIGITAL_PINS = ARDUINO_UNO_DIGITAL_PINS
 const ANALOG_PINS = ARDUINO_UNO_ANALOG_PINS
 
+let areHardwareBlocksRegistered = false
+
 // Register custom hardware blocks using Blockly JSON schema
-export function registerHardwareBlocks(): void {
+export function registerHardwareBlocks(force = false): void {
+  if (areHardwareBlocksRegistered && !force) {
+    return
+  }
+  if (
+    !force &&
+    typeof Blockly !== 'undefined' &&
+    (Blockly.Blocks as Record<string, unknown> | undefined)?.['pin_digital_write']
+  ) {
+    areHardwareBlocksRegistered = true
+    return
+  }
   Blockly.common.defineBlocksWithJsonArray([
     // 1. Digital Write
     {

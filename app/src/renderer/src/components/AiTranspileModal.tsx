@@ -258,7 +258,7 @@ export default function AiTranspileModal({
                   className="cf-ai-online-badge"
                   title={`Gemini API Active (${apiKeyStatus.maskedKey})`}
                 >
-                  GEMINI 2.5 FLASH
+                  GEMINI FLASH
                 </span>
               ) : (
                 <span

@@ -173,8 +173,8 @@ export class MicroPythonGenerator extends Blockly.CodeGenerator {
     // 10. DHT11/22 Temperature & Humidity
     this.forBlock['sensor_dht'] = (block) => {
       const pin = this.cleanPin(block.getFieldValue('PIN'))
-      const sensorType = block.getFieldValue('TYPE') || 'DHT11'
-      const readType = block.getFieldValue('READ') || 'TEMPERATURE'
+      const sensorType = block.getFieldValue('MODEL') || block.getFieldValue('TYPE') || 'DHT11'
+      const metric = block.getFieldValue('METRIC') || block.getFieldValue('READ') || 'TEMP_C'
 
       this.imports_['import_dht'] = 'import dht'
       this.setups_[`dht_${pin}`] = `dht_${pin} = dht.${sensorType}(Pin(${pin}))`
@@ -183,19 +183,28 @@ export class MicroPythonGenerator extends Blockly.CodeGenerator {
         `def get_dht_value(sensor, metric):`,
         '  try:',
         '    sensor.measure()',
-        '    return sensor.temperature() if metric == "temp" else sensor.humidity()',
+        '    if metric == "hum":',
+        '      return sensor.humidity()',
+        '    if metric == "temp_f":',
+        '      return round(sensor.temperature() * 1.8 + 32, 1)',
+        '    return sensor.temperature()',
         '  except Exception:',
         '    return 0.0'
       ].join('\n')
 
-      const metricArg = readType === 'HUMIDITY' ? '"hum"' : '"temp"'
+      const metricArg =
+        metric === 'HUMIDITY' ? '"hum"' : metric === 'TEMP_F' ? '"temp_f"' : '"temp"'
       return [`get_dht_value(dht_${pin}, ${metricArg})`, PythonOrder.FUNCTION_CALL]
     }
 
     // 11. Light Sensor (LDR)
     this.forBlock['sensor_light_ldr'] = (block) => {
       const pin = this.cleanPin(block.getFieldValue('PIN'))
+      const mode = block.getFieldValue('MODE')
       this.setups_[`ldr_adc_${pin}`] = `ldr_adc_${pin} = ADC(Pin(${pin}))`
+      if (mode === 'PERCENT') {
+        return [`int((ldr_adc_${pin}.read_u16() / 65535.0) * 100)`, PythonOrder.FUNCTION_CALL]
+      }
       return [`int(ldr_adc_${pin}.read_u16() >> 6)`, PythonOrder.FUNCTION_CALL]
     }
 
@@ -297,7 +306,10 @@ export class MicroPythonGenerator extends Blockly.CodeGenerator {
     // 18. Serial Print
     this.forBlock['serial_print'] = (block) => {
       const content = this.valueToCode(block, 'CONTENT', PythonOrder.NONE) || '""'
-      return `  print(${content})\n`
+      const newline =
+        block.getFieldValue('NEWLINE') !== 'FALSE' && block.getFieldValue('NEWLINE') !== false
+      const endArg = newline ? '' : ', end=""'
+      return `  print(${content}${endArg})\n`
     }
   }
 
@@ -479,7 +491,8 @@ export class MicroPythonGenerator extends Blockly.CodeGenerator {
     // Raw C++ Code Snippet (Fallback & Custom Code)
     this.forBlock['raw_cpp_code'] = (block) => {
       const code = block.getFieldValue('CODE') || ''
-      return `  # [Raw C++]: ${code}\n`
+      const lines = code.split('\n')
+      return lines.map((l) => `  # [Raw C++]: ${l}`).join('\n') + '\n'
     }
   }
 }

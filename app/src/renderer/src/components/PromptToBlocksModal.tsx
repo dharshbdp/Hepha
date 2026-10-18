@@ -139,7 +139,7 @@ export default function PromptToBlocksModal({
             <div className="cf-copilot-badge-row">
               <span className="cf-copilot-badge">AI SYNTHESIZER</span>
               <span className="cf-copilot-model-tag">
-                {apiKeyStatus?.isConfigured ? 'GEMINI 2.5 FLASH' : 'OFFLINE ENGINE'}
+                {apiKeyStatus?.isConfigured ? 'GEMINI FLASH' : 'OFFLINE ENGINE'}
               </span>
               <span className="cf-copilot-board-tag">{boardName}</span>
             </div>
@@ -264,7 +264,7 @@ export default function PromptToBlocksModal({
                   <span>SYNTHESIS COMPLETE ({result.blocks.length} BLOCKS GENERATED)</span>
                 </div>
                 <span className="cf-synthesis-source-tag">
-                  {result.source === 'gemini' ? 'CLOUD GEMINI 2.5' : 'OFFLINE DETERMINISTIC'}
+                  {result.source === 'gemini' ? 'CLOUD GEMINI' : 'OFFLINE DETERMINISTIC'}
                 </span>
               </div>
 

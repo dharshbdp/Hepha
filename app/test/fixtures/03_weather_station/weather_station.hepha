@@ -31,7 +31,7 @@
                   "block": {
                     "type": "sensor_dht",
                     "id": "dht_read",
-                    "fields": { "PIN": "2", "TYPE": "DHT11", "READING": "TEMP" }
+                    "fields": { "PIN": "2", "MODEL": "DHT11", "METRIC": "TEMP_C" }
                   }
                 }
               },

@@ -19,10 +19,22 @@ interface ConfigData {
   geminiApiKey?: string
 }
 
+function getUserDataDir(): string {
+  try {
+    if (app && typeof app.getPath === 'function') {
+      return app.getPath('userData')
+    }
+  } catch {
+    // Fall through to environment variables
+  }
+  return process.env.APPDATA || process.env.HOME || process.cwd()
+}
+
 function getConfigPath(): string {
-  const primary = path.join(app.getPath('userData'), 'hepha_ai_config.json')
+  const userDir = getUserDataDir()
+  const primary = path.join(userDir, 'hepha_ai_config.json')
   if (fs.existsSync(primary)) return primary
-  const legacy = path.join(app.getPath('userData'), 'circuitforge_ai_config.json')
+  const legacy = path.join(userDir, 'circuitforge_ai_config.json')
   if (fs.existsSync(legacy)) return legacy
   return primary
 }
@@ -399,6 +411,61 @@ export function generateOfflineExplanation(request: ExplainCircuitRequest): Circ
   }
 }
 
+const CANDIDATE_GEMINI_MODELS = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.5-flash']
+
+async function callGeminiWithCandidateModels(
+  apiKey: string,
+  body: unknown,
+  timeoutMs: number
+): Promise<{ ok: boolean; status?: number; data?: Record<string, unknown>; error?: string }> {
+  let lastStatus = 0
+  let lastError = ''
+
+  for (const model of CANDIDATE_GEMINI_MODELS) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), timeoutMs)
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: controller.signal
+      })
+      clearTimeout(timeout)
+
+      if (res.ok) {
+        const data = (await res.json()) as Record<string, unknown>
+        return { ok: true, data }
+      }
+
+      lastStatus = res.status
+      lastError = await res.text()
+
+      // If model not found (404) or access restricted (403), seamlessly try next model
+      if (res.status === 404 || res.status === 403) {
+        console.warn(`Gemini model ${model} returned ${res.status}, checking fallback model...`)
+        continue
+      }
+
+      return { ok: false, status: res.status, error: lastError }
+    } catch (err: unknown) {
+      clearTimeout(timeout)
+      lastError = err instanceof Error ? err.message : String(err)
+      if (err instanceof Error && err.name === 'AbortError') {
+        return { ok: false, error: 'Request timed out' }
+      }
+    }
+  }
+
+  return {
+    ok: false,
+    status: lastStatus || 500,
+    error: lastError || 'All candidate Gemini models unavailable'
+  }
+}
+
 /**
  * Calls Google Gemini API with structured prompt for deep circuit explanation.
  * Falls back to deterministic offline explanation if no API key or on error.
@@ -445,7 +512,6 @@ Return your response ONLY as valid JSON conforming strictly to this JSON schema:
   const userPrompt = `Analyze this embedded sketch for ${boardName}:\n\n\`\`\`cpp\n${request.code}\n\`\`\``
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
     const body = {
       contents: [{ parts: [{ text: userPrompt }] }],
       systemInstruction: { parts: [{ text: systemInstruction }] },
@@ -455,27 +521,16 @@ Return your response ONLY as valid JSON conforming strictly to this JSON schema:
       }
     }
 
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 12000)
+    const res = await callGeminiWithCandidateModels(apiKey, body, 14000)
 
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      signal: controller.signal
-    })
-    clearTimeout(timeout)
-
-    if (!res.ok) {
-      const errText = await res.text()
-      console.warn(`Gemini API returned error ${res.status}:`, errText)
+    if (!res.ok || !res.data) {
+      console.warn(`Gemini API returned error:`, res.error)
       const offline = generateOfflineExplanation(request)
-      offline.error = `Gemini API error (${res.status}). Displaying offline hardware analysis.`
+      offline.error = `Gemini API error (${res.status || 'offline'}). Displaying offline hardware analysis.`
       return offline
     }
 
-    const data = await res.json()
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+    const text = res.data.candidates?.[0]?.content?.parts?.[0]?.text
     if (!text) {
       throw new Error('Empty response from Gemini API')
     }
@@ -552,7 +607,6 @@ Return ONLY valid JSON matching this schema.`
   const userPrompt = `Synthesize microcontroller logic for ${boardName}:\n"${request.prompt}"`
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
     const body = {
       contents: [{ parts: [{ text: userPrompt }] }],
       systemInstruction: { parts: [{ text: systemInstruction }] },
@@ -562,33 +616,22 @@ Return ONLY valid JSON matching this schema.`
       }
     }
 
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 14000)
+    const res = await callGeminiWithCandidateModels(apiKey, body, 16000)
 
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      signal: controller.signal
-    })
-    clearTimeout(timeout)
-
-    if (!res.ok) {
-      const errText = await res.text()
-      console.warn(`Gemini API synthesis error ${res.status}:`, errText)
+    if (!res.ok || !res.data) {
+      console.warn(`Gemini API synthesis error:`, res.error)
       const offline = synthesizeOfflineIntent(request.prompt, request.boardId)
       return {
         success: true,
-        explanation: `${offline.explanation} (Note: Gemini API returned ${res.status}; synthesized via offline rule engine)`,
+        explanation: `${offline.explanation} (Note: Gemini API unavailable; synthesized via offline rule engine)`,
         blocks: offline.blocks as unknown as Record<string, unknown>[],
         cppCode: offline.cppCode,
         source: 'offline',
-        warnings: [`Cloud AI returned status ${res.status}. Used deterministic offline synthesis.`]
+        warnings: [`Cloud AI unavailable. Used deterministic offline synthesis.`]
       }
     }
 
-    const data = await res.json()
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+    const text = res.data.candidates?.[0]?.content?.parts?.[0]?.text
     if (!text) {
       throw new Error('Empty response from Gemini API')
     }
@@ -879,7 +922,6 @@ TRANSPILATION RULES:
   const userPrompt = `Transpile this Arduino C++ sketch for target board ${boardName} (${voltage} logic) into visual blocks:\n\n\`\`\`cpp\n${request.code}\n\`\`\``
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
     const body = {
       contents: [{ parts: [{ text: userPrompt }] }],
       systemInstruction: { parts: [{ text: systemInstruction }] },
@@ -889,29 +931,16 @@ TRANSPILATION RULES:
       }
     }
 
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 20000)
+    const res = await callGeminiWithCandidateModels(apiKey, body, 20000)
 
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      signal: controller.signal
-    })
-    clearTimeout(timeout)
-
-    if (!res.ok) {
-      const errText = await res.text()
-      console.warn(`Gemini API Transpiler returned status ${res.status}:`, errText)
+    if (!res.ok || !res.data) {
+      console.warn(`Gemini API Transpiler returned error:`, res.error)
       const offline = transpileOfflineSketch(request.code, request.boardId)
-      offline.warnings = [
-        `Cloud AI returned status ${res.status}. Used deterministic offline transpiler.`
-      ]
+      offline.warnings = ['Cloud AI unavailable. Used deterministic offline transpiler.']
       return offline
     }
 
-    const data = await res.json()
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+    const text = res.data.candidates?.[0]?.content?.parts?.[0]?.text
     if (!text) {
       throw new Error('Empty response from Gemini API')
     }

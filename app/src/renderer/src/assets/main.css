@@ -337,9 +337,13 @@ body {
 }
 
 .cf-control-board,
-.cf-control-port,
 .cf-control-baud {
   flex-shrink: 0;
+}
+
+.cf-control-port {
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 #cf-board-select {
@@ -351,8 +355,9 @@ body {
 }
 
 #cf-port-select {
-  width: 175px;
-  max-width: 205px;
+  min-width: 180px;
+  max-width: 380px;
+  width: clamp(200px, 24vw, 360px);
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -893,24 +898,19 @@ body.cf-resizing iframe {
 .cf-inspector-header {
   display: flex;
   align-items: stretch;
+  justify-content: space-between;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
-  padding: 0 4px;
+  padding: 0 2px 0 4px;
   height: 36px;
   min-height: 36px;
   box-sizing: border-box;
-  overflow-x: auto;
-  overflow-y: hidden;
-  min-width: 0;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  position: relative;
+  overflow: visible;
+  z-index: 20;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease;
-}
-
-.cf-inspector-header::-webkit-scrollbar {
-  display: none;
 }
 
 .cf-tabs {
@@ -919,26 +919,38 @@ body.cf-resizing iframe {
   height: 100%;
   gap: 1px;
   min-width: 0;
+  flex: 1 1 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cf-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .cf-tab {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
-  padding: 0 9px;
+  padding: 0 7px;
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: var(--text-muted);
   cursor: pointer;
   position: relative;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .cf-tab:hover {
@@ -957,6 +969,81 @@ body.cf-resizing iframe {
   font-weight: 600;
   border-bottom: 2px solid var(--text-primary);
   background: transparent;
+}
+
+/* Tab Overflow Container & Dropdown */
+.cf-tab-overflow-container {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  border-left: 1px solid var(--border-subtle);
+}
+
+.cf-tab-overflow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border-radius: 0;
+}
+
+.cf-tab-overflow-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  min-width: 140px;
+  z-index: 100;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: cf-fade-in 0.15s ease-out;
+}
+
+.cf-tab-overflow-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.12s ease;
+}
+
+.cf-tab-overflow-item:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.cf-tab-overflow-item.active {
+  background: var(--bg-surface-active);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.cf-tab-overflow-item-label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.cf-tab-overflow-item-indicators {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .cf-tab-badge {
@@ -1815,7 +1902,9 @@ body.cf-resizing iframe {
   border-bottom: none !important;
   cursor: pointer !important;
   box-sizing: border-box !important;
-  transition: background-color 0.15s ease, border-left-color 0.15s ease !important;
+  transition:
+    background-color 0.15s ease,
+    border-left-color 0.15s ease !important;
 }
 
 .blocklyToolboxCategory:hover {
@@ -1886,7 +1975,9 @@ body.cf-resizing iframe {
   font-weight: 600 !important;
 }
 
-:root[data-theme='light'] .blocklyToolboxCategory.blocklyToolboxSelected .blocklyToolboxCategoryLabel,
+:root[data-theme='light']
+  .blocklyToolboxCategory.blocklyToolboxSelected
+  .blocklyToolboxCategoryLabel,
 :root[data-theme='light'] .blocklyToolboxCategory.blocklyToolboxSelected .blocklyTreeLabel,
 :root[data-theme='light'] .blocklyToolboxSelected .blocklyToolboxCategoryLabel,
 :root[data-theme='light'] .blocklyToolboxSelected .blocklyTreeLabel {
@@ -1894,7 +1985,7 @@ body.cf-resizing iframe {
   font-weight: 600 !important;
 }
 
-.blocklyToolboxCategory[aria-disabled="true"],
+.blocklyToolboxCategory[aria-disabled='true'],
 .blocklyToolboxCategory.blocklyDisabled {
   opacity: 0.4 !important;
   cursor: not-allowed !important;

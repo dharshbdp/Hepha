@@ -53,6 +53,38 @@ export function EditorPage(): React.JSX.Element {
   const [blockCount, setBlockCount] = useState<number>(0)
   const [copiedCode, setCopiedCode] = useState<boolean>(false)
 
+  // Inspector width measurement and responsive tab overflow menu
+  const inspectorHeaderRef = useRef<HTMLDivElement>(null)
+  const [inspectorWidth, setInspectorWidth] = useState<number>(600)
+  const [isOverflowOpen, setIsOverflowOpen] = useState<boolean>(false)
+  const overflowRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!inspectorHeaderRef.current) return
+    const el = inspectorHeaderRef.current
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.contentRect.width > 0) {
+          setInspectorWidth(entry.contentRect.width)
+        }
+      }
+    })
+    ro.observe(el)
+    setInspectorWidth(el.clientWidth || 600)
+    return () => ro.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!isOverflowOpen) return
+    const handleOutsideClick = (e: MouseEvent): void => {
+      if (overflowRef.current && !overflowRef.current.contains(e.target as Node)) {
+        setIsOverflowOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleOutsideClick)
+    return () => document.removeEventListener('mousedown', handleOutsideClick)
+  }, [isOverflowOpen])
+
   // Sourced dynamically from Electron main process
   useEffect(() => {
     if (window.api?.getAppVersion) {
@@ -1057,30 +1089,42 @@ export function EditorPage(): React.JSX.Element {
             </div>
 
             {/* Port Selector */}
-            <div className="cf-control cf-control-port">
-              <label htmlFor="cf-port-select">PORT</label>
-              <select
-                id="cf-port-select"
-                value={selectedPort}
-                onChange={(e) => setSelectedPort(e.target.value)}
-                disabled={isConnected || isConnecting}
-                title={
-                  selectedPort
-                    ? `Selected Port: ${ports.find((p) => p.path === selectedPort)?.friendlyName || selectedPort}`
-                    : 'Select Serial COM Port'
-                }
-              >
-                {ports.length === 0 ? (
-                  <option value="">No Ports Detected</option>
-                ) : (
-                  ports.map((p) => (
-                    <option key={p.path} value={p.path} title={p.friendlyName || p.path}>
-                      {p.friendlyName || p.path}
-                    </option>
-                  ))
-                )}
-              </select>
-            </div>
+            {(() => {
+              const currentPortObj = ports.find((p) => p.path === selectedPort)
+              const portTitle = currentPortObj
+                ? currentPortObj.friendlyName && currentPortObj.friendlyName !== currentPortObj.path
+                  ? `${currentPortObj.friendlyName} (${currentPortObj.path})`
+                  : currentPortObj.path
+                : selectedPort || 'Select Serial COM Port'
+              return (
+                <div className="cf-control cf-control-port" title={portTitle}>
+                  <label htmlFor="cf-port-select">PORT</label>
+                  <select
+                    id="cf-port-select"
+                    value={selectedPort}
+                    onChange={(e) => setSelectedPort(e.target.value)}
+                    disabled={isConnected || isConnecting}
+                    title={portTitle}
+                  >
+                    {ports.length === 0 ? (
+                      <option value="">No Ports Detected</option>
+                    ) : (
+                      ports.map((p) => {
+                        const optTitle =
+                          p.friendlyName && p.friendlyName !== p.path
+                            ? `${p.friendlyName} (${p.path})`
+                            : p.path
+                        return (
+                          <option key={p.path} value={p.path} title={optTitle}>
+                            {optTitle}
+                          </option>
+                        )
+                      })
+                    )}
+                  </select>
+                </div>
+              )
+            })()}
 
             {/* Refresh Ports Button */}
             <button
@@ -1299,128 +1343,174 @@ export function EditorPage(): React.JSX.Element {
           style={viewMode === 'split' ? { flex: '1 1 0%', minWidth: 0 } : undefined}
         >
           {/* Tab Switcher */}
-          <div className="cf-inspector-header">
-            <div className="cf-tabs" role="tablist">
-              <button
-                className={`cf-tab ${activeTab === 'terminal' ? 'active' : ''}`}
-                onClick={() => setActiveTab('terminal')}
-                onFocus={(e) =>
-                  e.currentTarget.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                    inline: 'nearest'
-                  })
-                }
-                role="tab"
-                aria-selected={activeTab === 'terminal'}
-              >
-                <span>MONITOR</span>
-                <span className="cf-tab-badge">{logs.length}</span>
-              </button>
-              <button
-                className={`cf-tab ${activeTab === 'code' ? 'active' : ''}`}
-                onClick={() => setActiveTab('code')}
-                onFocus={(e) =>
-                  e.currentTarget.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                    inline: 'nearest'
-                  })
-                }
-                role="tab"
-                aria-selected={activeTab === 'code'}
-              >
-                <span>CODE</span>
-              </button>
-              <button
-                className={`cf-tab ${activeTab === 'build' ? 'active' : ''}`}
-                onClick={() => setActiveTab('build')}
-                onFocus={(e) =>
-                  e.currentTarget.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                    inline: 'nearest'
-                  })
-                }
-                role="tab"
-                aria-selected={activeTab === 'build'}
-              >
-                <span>BUILD</span>
-                {buildStatus && (
+          {(() => {
+            type TabId = 'terminal' | 'code' | 'build' | 'telemetry' | 'device' | 'copilot'
+            const allTabs: {
+              id: TabId
+              label: string
+              badge?: React.ReactNode
+              dot?: React.ReactNode
+            }[] = [
+              {
+                id: 'terminal',
+                label: 'MONITOR',
+                badge: <span className="cf-tab-badge">{logs.length}</span>
+              },
+              {
+                id: 'code',
+                label: 'CODE'
+              },
+              {
+                id: 'build',
+                label: 'BUILD',
+                dot: buildStatus && (
                   <span
                     className={`cf-tab-dot ${buildStatus === 'success' ? 'cf-dot-success' : 'cf-dot-error'}`}
                   />
-                )}
-              </button>
+                )
+              },
+              {
+                id: 'telemetry',
+                label: 'TELEMETRY',
+                badge:
+                  telemetry.channels.length > 0 ? (
+                    <span className="cf-tab-badge">{telemetry.channels.length}</span>
+                  ) : undefined
+              },
+              {
+                id: 'device',
+                label: 'DEVICE'
+              },
+              {
+                id: 'copilot',
+                label: 'AI COPILOT',
+                badge:
+                  diagnostics && diagnostics.hasErrors ? (
+                    <span
+                      className="cf-tab-badge cf-tab-badge-error"
+                      title={`${diagnostics.errorCount} pin conflicts`}
+                    >
+                      {diagnostics.errorCount}
+                    </span>
+                  ) : diagnostics && !diagnostics.hasErrors && diagnostics.hasWarnings ? (
+                    <span
+                      className="cf-tab-badge cf-tab-badge-warning"
+                      title={`${diagnostics.warningCount} warnings`}
+                    >
+                      {diagnostics.warningCount}
+                    </span>
+                  ) : undefined
+              }
+            ]
 
-              <button
-                className={`cf-tab ${activeTab === 'telemetry' ? 'active' : ''}`}
-                onClick={() => setActiveTab('telemetry')}
-                onFocus={(e) =>
-                  e.currentTarget.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                    inline: 'nearest'
-                  })
-                }
-                role="tab"
-                aria-selected={activeTab === 'telemetry'}
-              >
-                <span>TELEMETRY</span>
-                {telemetry.channels.length > 0 && (
-                  <span className="cf-tab-badge">{telemetry.channels.length}</span>
-                )}
-              </button>
+            let visibleTabs = allTabs
+            let overflowTabs: typeof allTabs = []
 
-              <button
-                className={`cf-tab ${activeTab === 'device' ? 'active' : ''}`}
-                onClick={() => setActiveTab('device')}
-                onFocus={(e) =>
-                  e.currentTarget.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                    inline: 'nearest'
-                  })
-                }
-                role="tab"
-                aria-selected={activeTab === 'device'}
-              >
-                <span>DEVICE</span>
-              </button>
+            if (inspectorWidth < 390) {
+              const maxVisible = inspectorWidth >= 320 ? 4 : inspectorWidth >= 250 ? 3 : 2
+              const isActiveInFirstN = allTabs.slice(0, maxVisible).some((t) => t.id === activeTab)
 
-              <button
-                className={`cf-tab ${activeTab === 'copilot' ? 'active' : ''}`}
-                onClick={() => setActiveTab('copilot')}
-                onFocus={(e) =>
-                  e.currentTarget.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                    inline: 'nearest'
-                  })
-                }
-                role="tab"
-                aria-selected={activeTab === 'copilot'}
-              >
-                <span>AI COPILOT</span>
-                {diagnostics && diagnostics.hasErrors && (
-                  <span
-                    className="cf-tab-badge cf-tab-badge-error"
-                    title={`${diagnostics.errorCount} pin conflicts`}
-                  >
-                    {diagnostics.errorCount}
-                  </span>
+              if (isActiveInFirstN) {
+                visibleTabs = allTabs.slice(0, maxVisible)
+                overflowTabs = allTabs.slice(maxVisible)
+              } else {
+                const activeTabObj = allTabs.find((t) => t.id === activeTab)!
+                const firstNMinusOne = allTabs.slice(0, maxVisible - 1)
+                const remaining = allTabs.filter(
+                  (t) => t.id !== activeTab && !firstNMinusOne.some((v) => v.id === t.id)
+                )
+                visibleTabs = [...firstNMinusOne, activeTabObj]
+                overflowTabs = remaining
+              }
+            }
+
+            const hasOverflowAlert = overflowTabs.some(
+              (t) =>
+                (t.id === 'copilot' && diagnostics?.hasErrors) ||
+                (t.id === 'build' && buildStatus === 'error')
+            )
+
+            return (
+              <div className="cf-inspector-header" ref={inspectorHeaderRef}>
+                <div className="cf-tabs" role="tablist">
+                  {visibleTabs.map((tab) => (
+                    <button
+                      key={tab.id}
+                      className={`cf-tab ${activeTab === tab.id ? 'active' : ''}`}
+                      onClick={() => setActiveTab(tab.id)}
+                      onFocus={(e) =>
+                        e.currentTarget.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'nearest',
+                          inline: 'nearest'
+                        })
+                      }
+                      role="tab"
+                      aria-selected={activeTab === tab.id}
+                    >
+                      <span>{tab.label}</span>
+                      {tab.dot}
+                      {tab.badge}
+                    </button>
+                  ))}
+                </div>
+
+                {overflowTabs.length > 0 && (
+                  <div className="cf-tab-overflow-container" ref={overflowRef}>
+                    <button
+                      type="button"
+                      className={`cf-tab cf-tab-overflow-btn ${
+                        overflowTabs.some((t) => t.id === activeTab) ? 'active' : ''
+                      }`}
+                      onClick={() => setIsOverflowOpen((prev) => !prev)}
+                      aria-label="More tabs"
+                      title="More tabs"
+                      aria-expanded={isOverflowOpen}
+                      aria-haspopup="true"
+                    >
+                      <span>MORE</span>
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                      {hasOverflowAlert && <span className="cf-tab-dot cf-dot-error" />}
+                    </button>
+
+                    {isOverflowOpen && (
+                      <div className="cf-tab-overflow-dropdown" role="menu">
+                        {overflowTabs.map((tab) => (
+                          <button
+                            key={tab.id}
+                            type="button"
+                            className={`cf-tab-overflow-item ${activeTab === tab.id ? 'active' : ''}`}
+                            onClick={() => {
+                              setActiveTab(tab.id)
+                              setIsOverflowOpen(false)
+                            }}
+                            role="menuitem"
+                          >
+                            <span className="cf-tab-overflow-item-label">{tab.label}</span>
+                            <span className="cf-tab-overflow-item-indicators">
+                              {tab.dot}
+                              {tab.badge}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 )}
-                {diagnostics && !diagnostics.hasErrors && diagnostics.hasWarnings && (
-                  <span
-                    className="cf-tab-badge cf-tab-badge-warning"
-                    title={`${diagnostics.warningCount} warnings`}
-                  >
-                    {diagnostics.warningCount}
-                  </span>
-                )}
-              </button>
-            </div>
-          </div>
+              </div>
+            )
+          })()}
 
           {/* Tab Content: Live Serial Monitor */}
           {activeTab === 'terminal' && (

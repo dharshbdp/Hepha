@@ -290,6 +290,31 @@ body {
   color: var(--bg-app);
 }
 
+.cf-btn-simulate-action {
+  border-color: var(--border-default);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.cf-btn-simulate-action:hover:not(:disabled) {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-strong);
+}
+
+.cf-btn-simulate-action.active {
+  background: var(--text-primary);
+  color: var(--bg-app);
+  border-color: var(--text-primary);
+  font-weight: 600;
+}
+
+.cf-btn-simulate-action.active:hover:not(:disabled) {
+  opacity: 0.9;
+  background: var(--text-primary);
+  color: var(--bg-app);
+}
+
+
 .cf-control {
   display: flex;
   align-items: center;
@@ -703,6 +728,12 @@ body.cf-resizing iframe {
   flex: 1;
   display: flex;
   border-left: none;
+}
+
+.cf-main-split.view-simulate .cf-canvas-pane,
+.cf-main-split.view-simulate .cf-inspector-pane,
+.cf-main-split.view-simulate .cf-resizer {
+  display: none !important;
 }
 
 /* Left Canvas Pane */

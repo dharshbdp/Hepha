@@ -1077,6 +1077,31 @@ export function EditorPage(): React.JSX.Element {
               <span>{isUploading ? 'Uploading...' : 'Upload'}</span>
             </button>
 
+            <button
+              type="button"
+              className={`cf-btn-action cf-btn-simulate-action ${viewMode === 'simulate' ? 'active' : ''}`}
+              onClick={() => setViewMode(viewMode === 'simulate' ? 'split' : 'simulate')}
+              title={
+                viewMode === 'simulate'
+                  ? 'Exit Simulation Mode (Return to Split View)'
+                  : 'Launch Virtual Hardware Simulation Mode'
+              }
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+              <span>{viewMode === 'simulate' ? 'Exit Sim' : 'Simulate'}</span>
+            </button>
+
             {/* Static Hardware Diagnostics Status Badge (Milestone v0.6 Phase 15) */}
             {diagnostics && blockCount > 0 && (
               <button

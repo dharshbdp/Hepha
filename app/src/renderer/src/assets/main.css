@@ -1072,13 +1072,11 @@ body.cf-resizing iframe {
 }
 
 .cf-dot-success {
-  background: #2e7d32;
-  box-shadow: 0 0 5px rgba(46, 125, 50, 0.6);
+  background: var(--text-secondary);
 }
 
 .cf-dot-error {
-  background: #d32f2f;
-  box-shadow: 0 0 5px rgba(211, 47, 47, 0.6);
+  background: var(--text-muted);
 }
 
 .cf-tab-content {
@@ -2971,15 +2969,14 @@ body.cf-resizing iframe {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 6px #10b981;
+  background: var(--text-secondary);
 }
 
 .cf-dot-amber {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #f59e0b;
+  background: var(--text-muted);
 }
 
 .cf-copilot-header-right {

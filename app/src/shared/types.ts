@@ -45,6 +45,11 @@ export interface UploadResult {
   humanError?: string
 }
 
+export interface VirtualCircuitConfig {
+  boardId: string
+  components: unknown[]
+}
+
 // Project File & Storage (Milestone v0.4 Phase 10)
 export interface HephaProject {
   formatVersion: '1.0'
@@ -55,6 +60,7 @@ export interface HephaProject {
   workspace: Record<string, unknown>
   createdAt: string
   updatedAt: string
+  simulation?: VirtualCircuitConfig
 }
 export type CircuitForgeProject = HephaProject
 

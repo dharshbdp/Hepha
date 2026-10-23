@@ -24,6 +24,8 @@ import {
   applyBlocklyWarningBadges,
   type CircuitDiagnosticsResult
 } from '@core/validation'
+import { SimulationWorkspace } from '../components/simulation'
+import type { VirtualCircuitConfig } from '@simulator'
 
 const BAUD_RATES = [9600, 19200, 38400, 57600, 115200, 230400]
 
@@ -46,12 +48,13 @@ export function EditorPage(): React.JSX.Element {
 
   // Layout & Workspace states
   const [appVersion, setAppVersion] = useState<string>('1.0.0')
-  const [viewMode, setViewMode] = useState<'split' | 'canvas' | 'terminal'>('split')
+  const [viewMode, setViewMode] = useState<'split' | 'canvas' | 'terminal' | 'simulate'>('split')
   const [activeTab, setActiveTab] = useState<
     'terminal' | 'code' | 'device' | 'build' | 'telemetry' | 'copilot'
   >('terminal')
   const [blockCount, setBlockCount] = useState<number>(0)
   const [copiedCode, setCopiedCode] = useState<boolean>(false)
+  const [simulationConfig, setSimulationConfig] = useState<VirtualCircuitConfig | undefined>()
 
   // Inspector width measurement and responsive tab overflow menu
   const inspectorHeaderRef = useRef<HTMLDivElement>(null)
@@ -353,6 +356,7 @@ export function EditorPage(): React.JSX.Element {
     workspaceRef.current?.clear()
     setBlockCount(0)
     setDiagnostics(null)
+    setSimulationConfig(undefined)
     setProjectName('Untitled Project')
     setCurrentFilePath(null)
     setIsDirty(false)
@@ -369,7 +373,8 @@ export function EditorPage(): React.JSX.Element {
       baudRate: selectedBaud,
       workspace: serialized.state,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      ...(simulationConfig ? { simulation: simulationConfig } : {})
     }
 
     const targetPath = saveAs ? undefined : currentFilePath || undefined
@@ -414,6 +419,11 @@ export function EditorPage(): React.JSX.Element {
       if (result.project.baudRate) {
         setSelectedBaud(result.project.baudRate)
       }
+      if (result.project.simulation) {
+        setSimulationConfig(result.project.simulation as VirtualCircuitConfig)
+      } else {
+        setSimulationConfig(undefined)
+      }
       setIsDirty(false)
       showNotification(`Opened: ${result.project.name}`)
     } else if (result.error) {
@@ -438,6 +448,11 @@ export function EditorPage(): React.JSX.Element {
     setCurrentFilePath(null)
     setSelectedBoard(starter.boardId)
     setSelectedBaud(starter.baudRate)
+    if (starter.project.simulation) {
+      setSimulationConfig(starter.project.simulation as VirtualCircuitConfig)
+    } else {
+      setSimulationConfig(undefined)
+    }
     setIsDirty(false)
     setIsStarterModalOpen(false)
     showNotification(`Loaded template: ${starter.name}`)
@@ -964,6 +979,25 @@ export function EditorPage(): React.JSX.Element {
               </svg>
               <span>Console</span>
             </button>
+            <button
+              className={`cf-view-btn ${viewMode === 'simulate' ? 'active' : ''}`}
+              onClick={() => setViewMode('simulate')}
+              title="Virtual Hardware Simulation Mode"
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+              <span>Simulate</span>
+            </button>
           </div>
 
           {/* Right Controls: Connection Status Badge & Theme Switcher */}
@@ -1190,6 +1224,32 @@ export function EditorPage(): React.JSX.Element {
 
       {/* Main Dual-Pane Workspace */}
       <main className={`cf-main-split view-${viewMode}`} ref={splitContainerRef}>
+        {/* Simulation Workspace Mode */}
+        {viewMode === 'simulate' && (
+          <SimulationWorkspace
+            workspaceRef={workspaceRef}
+            blockCount={blockCount}
+            boardId={selectedBoard}
+            circuitConfig={simulationConfig}
+            onCircuitConfigChange={(cfg) => {
+              setSimulationConfig(cfg)
+              setIsDirty(true)
+            }}
+            onLoadWorkspaceState={(state) => {
+              if (workspaceRef.current) {
+                isProgrammaticLoadRef.current = true
+                loadWorkspace(workspaceRef.current, {
+                  version: '1.0',
+                  timestamp: new Date().toISOString(),
+                  blockCount: 0,
+                  state
+                })
+                setIsDirty(true)
+              }
+            }}
+          />
+        )}
+
         {/* Left Pane: Visual Block Canvas */}
         <section
           className="cf-canvas-pane"

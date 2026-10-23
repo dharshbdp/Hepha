@@ -1,18 +1,14 @@
 /**
- * Hepha Simulator Module (Reserved for Milestone v0.4+)
- * Provides virtual microcontroller emulation and live sensor simulation.
+ * Hepha Simulation Module
+ * Virtual microcontroller emulation, deterministic clocking,
+ * live hardware peripherals, and safe Blockly execution.
  */
 
-export interface VirtualPinState {
-  pin: string
-  mode: 'INPUT' | 'OUTPUT' | 'PWM'
-  value: number
-}
-
-export interface SimulationEngine {
-  start(): void
-  stop(): void
-  pause(): void
-  readPin(pin: string): number
-  writePin(pin: string, value: number): void
-}
+export * from './types'
+export * from './virtualClock'
+export * from './virtualSerial'
+export * from './virtualBoard'
+export * from './components'
+export * from './simulationAdapter'
+export * from './simulationEngine'
+export * from './demoProjects'

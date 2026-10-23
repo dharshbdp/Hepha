@@ -4529,3 +4529,1111 @@ body.cf-resizing iframe {
     font-size: 10px;
   }
 }
+
+/* =========================================================================
+   HEPHA SIMULATION MODE STYLES
+   ========================================================================= */
+
+.sim-workspace-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%;
+  height: 100%;
+  min-height: 0;
+  background-color: var(--bg-app);
+  overflow: hidden;
+}
+
+/* Simulation Execution Toolbar */
+.sim-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  background-color: var(--bg-header);
+  border-bottom: 1px solid var(--border-default);
+  gap: 12px;
+  user-select: none;
+  flex-wrap: nowrap;
+}
+
+.sim-action-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sim-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--btn-secondary-bg);
+  border: 1px solid var(--btn-secondary-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sim-btn:hover:not(:disabled) {
+  background-color: var(--btn-secondary-hover);
+  border-color: var(--border-focus);
+}
+
+.sim-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.sim-btn-primary {
+  color: var(--btn-primary-text);
+  background-color: var(--btn-primary-bg);
+  border-color: var(--btn-primary-border);
+  font-weight: 600;
+}
+
+.sim-btn-primary:hover:not(:disabled) {
+  background-color: var(--btn-primary-hover);
+}
+
+.sim-btn-run,
+.sim-btn-resume {
+  color: #09090b;
+  background-color: #f4f4f6;
+}
+
+.sim-btn-pause {
+  color: #f4f4f6;
+  background-color: #27272a;
+}
+
+.sim-btn-stop {
+  color: #e4e4e7;
+}
+
+.sim-btn-reset {
+  color: var(--text-secondary);
+}
+
+.sim-btn-sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 24px;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--btn-secondary-bg);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sim-btn-sm:hover:not(:disabled) {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-focus);
+}
+
+.sim-btn-xs {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 7px;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.sim-btn-xs:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: var(--border-default);
+}
+
+.sim-btn-xs.active {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-active);
+  border-color: var(--border-focus);
+}
+
+/* Status Pill & Clock */
+.sim-center-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sim-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+
+.sim-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--text-muted);
+}
+
+.status-running .sim-status-dot {
+  background-color: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.4);
+}
+
+.status-running .sim-status-label {
+  color: #f4f4f6;
+}
+
+.status-paused .sim-status-dot {
+  background-color: #eab308;
+}
+
+.status-error .sim-status-dot {
+  background-color: #ef4444;
+}
+
+.sim-clock-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  background-color: var(--bg-terminal);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text-primary);
+}
+
+.sim-speed-picker,
+.sim-demo-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sim-speed-picker label,
+.sim-demo-picker label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.sim-speed-picker select,
+.sim-demo-picker select {
+  height: 24px;
+  padding: 0 6px;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.sim-demo-picker select {
+  max-width: 170px;
+}
+
+.sim-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Main Simulation Viewport (Dual-Column) */
+.sim-main-viewport {
+  display: flex;
+  flex: 1 1 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sim-left-pane {
+  flex: 1 1 58%;
+  min-width: 320px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border-default);
+  background-color: var(--bg-app);
+  overflow: hidden;
+}
+
+.sim-right-pane {
+  flex: 1 1 42%;
+  min-width: 300px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-surface);
+  overflow: hidden;
+}
+
+/* Workbench */
+.sim-workbench-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sim-workbench-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background-color: var(--bg-header);
+  border-bottom: 1px solid var(--border-subtle);
+  min-height: 38px;
+}
+
+.sim-workbench-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sim-pane-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.sim-comp-count {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background-color: var(--bg-surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+}
+
+.sim-cards-grid {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-auto-rows: max-content;
+  gap: 12px;
+}
+
+.sim-workbench-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.sim-empty-icon {
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+.sim-workbench-empty h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.sim-workbench-empty p {
+  font-size: 12px;
+  max-width: 320px;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+/* Component Cards */
+.sim-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: border-color 0.15s ease;
+}
+
+.sim-card:hover {
+  border-color: var(--border-strong);
+}
+
+.sim-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 6px;
+}
+
+.sim-card-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.sim-card-title {
+  flex: 1 1 auto;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sim-card-remove {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.sim-card-remove:hover {
+  color: #ef4444;
+}
+
+.sim-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sim-card-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.sim-card-control label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.sim-card-control select {
+  height: 22px;
+  padding: 0 6px;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-default);
+  border-radius: 3px;
+  font-size: 11px;
+  color: var(--text-primary);
+}
+
+.sim-card-control-dual {
+  display: flex;
+  gap: 8px;
+}
+
+.sim-card-control-dual .sim-card-control {
+  flex: 1 1 50%;
+}
+
+/* LED Component Visual */
+.sim-led-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+  gap: 6px;
+}
+
+.sim-led-bulb {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #86efac, #22c55e 60%, #15803d);
+  border: 2px solid #14532d;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.sim-led-bulb.off {
+  background: radial-gradient(circle at 35% 35%, #52525b, #27272a 70%, #18181b);
+  border-color: #27272a;
+  box-shadow: none;
+}
+
+.sim-led-glare {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.sim-led-state-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Push Button Visual */
+.sim-btn-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 0;
+  gap: 6px;
+}
+
+.sim-push-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background-color: #27272a;
+  border: 2px solid #3f3f46;
+  box-shadow: 0 3px 0 #18181b, 0 4px 6px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.08s ease;
+}
+
+.sim-push-button:active,
+.sim-push-button.active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #18181b, 0 2px 3px rgba(0, 0, 0, 0.3);
+  background-color: #3f3f46;
+}
+
+.sim-btn-cap {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #71717a, #3f3f46);
+  border: 1px solid #52525b;
+}
+
+.sim-btn-status-text {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Potentiometer & Sliders */
+.sim-pot-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.sim-pot-readout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.sim-pot-val {
+  color: var(--text-primary);
+}
+
+.sim-pot-voltage {
+  color: var(--text-secondary);
+}
+
+.sim-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #27272a;
+  outline: none;
+  accent-color: var(--text-primary);
+  cursor: pointer;
+}
+
+/* Ultrasonic Visual */
+.sim-us-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+.sim-us-eyes {
+  display: flex;
+  gap: 8px;
+}
+
+.sim-us-eye {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #a1a1aa, #52525b 70%, #27272a);
+  border: 2px solid #3f3f46;
+}
+
+.sim-us-dist-readout {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.sim-us-dist-readout strong {
+  font-size: 15px;
+}
+
+/* Digital Sensor Toggle */
+.sim-sensor-toggle {
+  display: flex;
+  justify-content: center;
+  padding: 6px 0;
+}
+
+.sim-toggle-btn {
+  padding: 6px 16px;
+  border-radius: 4px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.sim-toggle-btn.active {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-border);
+}
+
+/* Right Pane Tabs & Inspectors */
+.sim-inspector-tabs {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  min-height: 38px;
+  background-color: var(--bg-header);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 8px;
+  gap: 4px;
+}
+
+.sim-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sim-tab-btn:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-hover);
+}
+
+.sim-tab-btn.active {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-active);
+  border-color: var(--border-subtle);
+  font-weight: 600;
+}
+
+.sim-tab-badge {
+  font-size: 9.5px;
+  padding: 0 5px;
+  border-radius: 8px;
+  background-color: var(--bg-app);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+}
+
+.sim-tab-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* GPIO Inspector Table */
+.sim-gpio-inspector {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sim-inspector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+}
+
+.sim-board-badge {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 2px 6px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+}
+
+.sim-gpio-tables-container {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sim-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.sim-gpio-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.sim-gpio-table th {
+  text-align: left;
+  padding: 6px 8px;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-card);
+}
+
+.sim-gpio-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.pin-row:hover td {
+  background-color: var(--bg-surface-hover);
+}
+
+.sim-mode-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.sim-mode-tag.mode-output {
+  background-color: #1e293b;
+  color: #93c5fd;
+  border: 1px solid #334155;
+}
+
+.sim-mode-tag.mode-input {
+  background-color: #27272a;
+  color: #a1a1aa;
+  border: 1px solid #3f3f46;
+}
+
+.sim-mode-tag.mode-input_pullup {
+  background-color: #2e1065;
+  color: #c4b5fd;
+  border: 1px solid #4c1d95;
+}
+
+.sim-state-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.sim-state-tag.state-high {
+  color: #22c55e;
+}
+
+.sim-state-tag.state-low {
+  color: var(--text-muted);
+}
+
+.sim-pwm-meter,
+.sim-adc-meter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pwm-num,
+.adc-num {
+  font-family: monospace;
+  font-size: 10px;
+  min-width: 24px;
+}
+
+.pwm-track,
+.adc-track {
+  flex: 1 1 auto;
+  height: 4px;
+  background-color: #27272a;
+  border-radius: 2px;
+  overflow: hidden;
+  max-width: 60px;
+}
+
+.pwm-fill,
+.adc-fill {
+  height: 100%;
+  background-color: var(--text-primary);
+}
+
+.sim-cap-badge {
+  font-size: 9.5px;
+  font-weight: 600;
+  padding: 1px 4px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  color: var(--text-secondary);
+}
+
+.sim-voltage-tag {
+  font-family: monospace;
+  font-size: 10.5px;
+  color: var(--text-secondary);
+}
+
+.sim-text-dim {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+/* Virtual Serial Monitor */
+.sim-serial-monitor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sim-serial-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sim-port-tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-left: 8px;
+}
+
+.sim-serial-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.sim-serial-body {
+  flex: 1 1 auto;
+  background-color: var(--bg-terminal);
+  padding: 10px;
+  overflow-y: auto;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.sim-serial-empty {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-style: italic;
+  padding: 12px;
+}
+
+.sim-serial-line {
+  display: flex;
+  gap: 8px;
+  word-break: break-all;
+}
+
+.sim-serial-ts {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.sim-serial-text {
+  color: var(--terminal-line);
+}
+
+/* Diagnostics Panel */
+.sim-diagnostics-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sim-diag-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sim-diag-counts {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: 8px;
+}
+
+.sim-diag-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.sim-diag-badge.badge-error {
+  background-color: #450a0a;
+  color: #fca5a5;
+  border: 1px solid #7f1d1d;
+}
+
+.sim-diag-badge.badge-warning {
+  background-color: #422006;
+  color: #fde047;
+  border: 1px solid #713f12;
+}
+
+.sim-diag-badge.badge-zero {
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+}
+
+.sim-diag-list {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sim-diag-empty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+  color: var(--text-muted);
+  font-size: 11.5px;
+}
+
+.sim-diag-item {
+  display: flex;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-card);
+  font-size: 11px;
+}
+
+.sim-diag-item.item-error {
+  border-color: #7f1d1d;
+  background-color: #1a0505;
+}
+
+.sim-diag-item.item-warning {
+  border-color: #713f12;
+  background-color: #180c02;
+}
+
+.sim-diag-icon {
+  font-weight: bold;
+}
+
+.sim-diag-msg {
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.sim-diag-meta {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.meta-tag {
+  font-size: 10px;
+  color: var(--text-muted);
+  background-color: var(--bg-surface);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+/* Modal Dialog */
+.sim-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sim-modal-card {
+  width: 90%;
+  max-width: 460px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+.sim-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: var(--bg-header);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.sim-modal-header h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.sim-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.sim-modal-close:hover {
+  color: var(--text-primary);
+}
+
+.sim-modal-body {
+  padding: 14px;
+}
+
+.sim-comp-library-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sim-lib-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sim-lib-btn:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-focus);
+}
+
+.sim-lib-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background-color: #27272a;
+}
+
+.sim-lib-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sim-lib-text strong {
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+.sim-lib-text span {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+

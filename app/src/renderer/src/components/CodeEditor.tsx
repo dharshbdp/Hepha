@@ -1,4 +1,5 @@
 import { useState, useRef, useMemo } from 'react'
+import { highlightCode } from '../utils/codeHighlighter'
 
 export interface CodeEditorProps {
   value: string
@@ -15,15 +16,29 @@ export function CodeEditor({
 }: CodeEditorProps): React.JSX.Element {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const gutterRef = useRef<HTMLDivElement>(null)
+  const preRef = useRef<HTMLPreElement>(null)
   const [cursorPos, setCursorPos] = useState({ line: 1, col: 1 })
 
   const lines = useMemo(() => value.split('\n'), [value])
   const lineCount = lines.length
 
-  // Synchronize gutter scroll with textarea
+  const highlightedHtml = useMemo(() => {
+    const html = highlightCode(value, language)
+    return value.endsWith('\n') ? `${html}\n ` : html
+  }, [value, language])
+
+  // Synchronize gutter and pre scroll with textarea
   const handleScroll = (): void => {
-    if (textareaRef.current && gutterRef.current) {
-      gutterRef.current.scrollTop = textareaRef.current.scrollTop
+    if (textareaRef.current) {
+      const top = textareaRef.current.scrollTop
+      const left = textareaRef.current.scrollLeft
+      if (gutterRef.current) {
+        gutterRef.current.scrollTop = top
+      }
+      if (preRef.current) {
+        preRef.current.scrollTop = top
+        preRef.current.scrollLeft = left
+      }
     }
   }
 
@@ -232,24 +247,32 @@ export function CodeEditor({
             </div>
           ))}
         </div>
-        <textarea
-          ref={textareaRef}
-          className="cf-code-textarea"
-          value={value}
-          onChange={(e) => {
-            onChange(e.target.value)
-            updateCursor()
-          }}
-          onKeyDown={handleKeyDown}
-          onKeyUp={updateCursor}
-          onClick={updateCursor}
-          onScroll={handleScroll}
-          readOnly={readOnly}
-          spellCheck={false}
-          autoCapitalize="off"
-          autoComplete="off"
-          autoCorrect="off"
-        />
+        <div className="cf-code-editor-surface">
+          <pre
+            ref={preRef}
+            className="cf-code-highlight"
+            aria-hidden="true"
+            dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+          />
+          <textarea
+            ref={textareaRef}
+            className="cf-code-textarea"
+            value={value}
+            onChange={(e) => {
+              onChange(e.target.value)
+              updateCursor()
+            }}
+            onKeyDown={handleKeyDown}
+            onKeyUp={updateCursor}
+            onClick={updateCursor}
+            onScroll={handleScroll}
+            readOnly={readOnly}
+            spellCheck={false}
+            autoCapitalize="off"
+            autoComplete="off"
+            autoCorrect="off"
+          />
+        </div>
       </div>
       <div className="cf-code-editor-status">
         <span className="cf-code-status-lang">
